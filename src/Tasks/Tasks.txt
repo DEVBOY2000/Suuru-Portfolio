@@ -1,0 +1,5 @@
+- can upload files to storage & realtime database
+- optimize preformance [many re-render - handling img size to improve preformance]
+- use react-lazy-load library
+- use suspance component
+- deploy project on github 

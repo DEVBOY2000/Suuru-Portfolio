@@ -76,3 +76,10 @@ export const unEncodedStr = (string) => {
 export const clearString = (string) => {
   return string.replace(/[\[\]\(\)]/gi, "");
 };
+
+// export const ParentAppComStyle = () => {
+//   const object = {
+//     "/Suuru-Portfolio" : "mb-[92px] sm:mb-[72px]",
+//     ""
+//   }
+// }

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://DEVBOY2000.github.io/Suuru-Portfolio/",
+  "homepage": "https://DEVBOY2000.github.io/Suuru-Portfolio",
   "scripts": {
     "predeploy" : "npm run build",
     "deploy" : "gh-pages -d dist",

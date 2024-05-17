@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Lists from "./Lists";
 import ListsMobView from "./ListsMobView";
@@ -6,10 +6,12 @@ import useMediaQuery from "../../Hooks/useMediaQuery";
 import MobMenuIcon from "./MobMenuIcon";
 import Theme from "./Theme";
 import Account from "./Account";
+import { AppContext } from "../../Context/AppContext";
 
 const Navbar = () => {
   const [scrollTop, setScrollTop] = useState(false);
   const [listsState, setListsState] = useState(false);
+  const {signIn} = useContext(AppContext)
 
   const { pathname } = useLocation();
 
@@ -67,7 +69,7 @@ const Navbar = () => {
         <>
           <MobMenuIcon listsState={listsState} setListsState={setListsState} />
           <Theme StylesHandler={StylesHandler} />
-          <Account />
+          {signIn?.email && <Account />}
         </>
       )}
 

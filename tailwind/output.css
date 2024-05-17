@@ -940,6 +940,10 @@ video {
   width: 100vw;
 }
 
+.w-\[33px\] {
+  width: 33px;
+}
+
 .min-w-fit {
   min-width: -moz-fit-content;
   min-width: fit-content;
@@ -1230,6 +1234,11 @@ video {
 .object-top {
   -o-object-position: top;
      object-position: top;
+}
+
+.object-\[90\%\] {
+  -o-object-position: 90%;
+     object-position: 90%;
 }
 
 .p-2 {
@@ -1643,6 +1652,10 @@ video {
     width: fit-content;
   }
 
+  .xs\:w-auto {
+    width: auto;
+  }
+
   .xs\:auto-rows-\[450px\] {
     grid-auto-rows: 450px;
   }
@@ -1681,6 +1694,10 @@ video {
 
   .sm\:w-\[600px\] {
     width: 600px;
+  }
+
+  .sm\:w-auto {
+    width: auto;
   }
 
   .sm\:min-w-\[600px\] {

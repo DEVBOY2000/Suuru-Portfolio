@@ -77,9 +77,14 @@ export const clearString = (string) => {
   return string.replace(/[\[\]\(\)]/gi, "");
 };
 
-// export const ParentAppComStyle = () => {
-//   const object = {
-//     "/Suuru-Portfolio" : "mb-[92px] sm:mb-[72px]",
-//     ""
-//   }
-// }
+export const parentAppComStyle = (pathname) => {
+  if (pathname.replace(/\//g, "") === "Suuru-Portfolio") {
+    return "mb-[92px] sm:mb-[72px]" 
+  } else if (pathname.includes("/project")) {
+    return "mb-[-60px] min-h-[calc(100vh_-_92px)] min-h-[calc(100vh_-_96px)] sm:min-h-[calc(100vh_-_72px)] pt-[57px]";
+  } else if (pathname.includes("/uploadProject") || pathname.includes("/uploadToProject")) {
+    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] pt-[64px] sm:mb-[72px] overflow-auto"
+  } else if (pathname.includes("/login")) {
+    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] h-[100vh_!important]"
+  }
+}

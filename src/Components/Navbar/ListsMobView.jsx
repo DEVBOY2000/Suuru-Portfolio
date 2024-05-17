@@ -5,8 +5,6 @@ import { navbarLists } from "../../Utils/constants";
 const ListsMobView = () => {
   const { pathname } = useLocation();
 
-  console.log(pathname);
-
   const activeLinkHandler = (route) => {
     return pathname === `/Suuru-Portfolio${route}` ||
       pathname === `/Suuru-Portfolio/${route}`

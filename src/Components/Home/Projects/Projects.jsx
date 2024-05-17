@@ -17,7 +17,6 @@ const Projects = () => {
     get(dbRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
-          // console.log(snapshot.val());
           const result = snapshot
             .val()
             .map((item) => ({ ...item, playVideoState: false }));

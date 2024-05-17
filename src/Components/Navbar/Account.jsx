@@ -27,7 +27,7 @@ const Account = () => {
           <img
             src={signIn.photoURL}
             title={signIn.displayName}
-            className="w-[40px] rounded-full"
+            className="w-[33px] rounded-full"
           />
         )}
       </div>

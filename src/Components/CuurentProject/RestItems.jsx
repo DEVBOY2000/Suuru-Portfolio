@@ -8,8 +8,8 @@ const RestItems = () => {
   useEffect(() => {
     function scrollHandler () {
       const { innerHeight} = this;
-      const x = restItemsRef.current.getBoundingClientRect()
-      if (x.bottom <= innerHeight) {
+      const restItemsCom = restItemsRef.current.getBoundingClientRect()
+      if (restItemsCom.bottom <= innerHeight) {
         setMoreItems(true)
       } else setMoreItems(false)
     }
@@ -19,7 +19,7 @@ const RestItems = () => {
 
   
   return (
-    <div role="status" className="py-8 mx-auto" ref={restItemsRef}>
+    <div role="status" className="h-[80px] flex justify-center items-center relative dark:bg-dark-color bg-white " ref={restItemsRef}>
       <svg
         aria-hidden="true"
         className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

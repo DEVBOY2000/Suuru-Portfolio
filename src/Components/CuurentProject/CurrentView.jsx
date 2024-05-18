@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import left_arrow from "../../SVG/left_arrow.svg";
 import right_arrow from "../../SVG/right_arrow.svg";
 import { AppContext } from "../../Context/AppContext";
@@ -18,12 +18,31 @@ const CurrentView = () => {
     prevView,
   } = useContext(AppContext);
 
+  const [opacity, setOpacity] = useState(1);
+
   const { name } = useParams();
+
+  const ref = useRef()
 
   //handling current content
   useEffect(() => {
     setCurrentView(currentRestItems[0]);
   }, [currentProjectItems.length, name]);
+
+  useEffect(() => {
+
+    function scrollHandler() {
+      const itemsComponent = document.getElementById("items").getBoundingClientRect().top;
+      const currentViewRef = ref.current.clientHeight
+      const value = Math.round(itemsComponent / currentViewRef * 100) / 100
+      if (value <= 1 && value >= 0) {
+        setOpacity(value)
+      }
+    }
+
+    window.addEventListener("scroll", scrollHandler)
+    return () => window.removeEventListener("scroll", scrollHandler)
+  })
   
   const activePreview = () => {
     return currentView.includes("mp4")
@@ -32,7 +51,10 @@ const CurrentView = () => {
   };
 
   return (
-    <div className="relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100dvh_-_57px)] xs:h-[calc(100dvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden">
+    <div className="sticky top-0 z-0 sm:z-auto sm:relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100dvh_-_57px)] xs:h-[calc(100dvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden"
+         ref={ref}
+         style={{opacity}}
+    >
       {currentView.includes(activePreview()) ? (
         <FontAwesomeIcon
           icon="fa-solid fa-eye"

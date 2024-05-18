@@ -70,7 +70,7 @@ const Items = () => {
       <div
         ref={componentRef}
         id="items"
-        className="min-h-[calc(100vh_-_(57px_+_24px_+_72px))] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 auto-rows-[450px] lg:auto-rows-[500px] gap-3 mx-3"
+        className="min-h-[calc(100vh_-_(57px_+_24px_+_72px))] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 auto-rows-[450px] lg:auto-rows-[500px] gap-3 p-3 dark:bg-dark-color bg-white relative z-20"
       >
         {currentRestItems.map((item, i) => (
           <Item item={item} index={i} key={i} />

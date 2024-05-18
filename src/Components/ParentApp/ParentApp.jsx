@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Outlet, useHref } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
@@ -9,9 +9,15 @@ import { globalIcons } from "../../Utils/GlobalIcons";
 import { parentAppComStyle } from "../../Utils/constants";
 
 const ParentApp = () => {
-  const { editState, signIn } = useContext(AppContext);
+  const { editState, setSearchedProjects,setCurrentView, setCurrentProjectItems } = useContext(AppContext);
 
   const  pathname  = useHref();
+
+  useEffect(() => {
+    setSearchedProjects([])
+    setCurrentView("")
+    setCurrentProjectItems([])
+  }, [pathname])
 
   return (
     <div className="dark:bg-dark-color bg-white">

@@ -1,35 +1,18 @@
-import React, { useEffect, useContext } from "react";
-import { ref, get } from "firebase/database";
-import { database } from "../../../Firebase/Firebase";
+import React, {useContext } from "react";
 
 import Project from "./Project";
 import { AppContext } from "../../../Context/AppContext";
 import SearchProject from "./SearchProjects";
+import useProjectsDB from "../../../Hooks/useProjectsDB";
 
 const Projects = () => {
-  const { projects, setProjects, searchedProjects } = useContext(AppContext);
+  const { projects, searchedProjects } = useContext(AppContext);
 
   const viewedProjectsHandler = () =>
     searchedProjects.length ? searchedProjects : projects;
 
-  useEffect(() => {
-    const dbRef = ref(database);
-    get(dbRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const result = snapshot
-            .val()
-            .map((item) => ({ ...item, playVideoState: false }));
-          setProjects(result);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
+    //get realtime database
+    useProjectsDB()
   return (
     <>
       <SearchProject />

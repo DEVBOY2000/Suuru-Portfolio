@@ -13,7 +13,7 @@ import video3 from "../Components/Auth/videos/video (3).mp4";
 import video4 from "../Components/Auth/videos/video (4).mp4";
 
 export const navbarLists = {
-  home: "",
+  "home": "",
   "upload project": "uploadProject",
   "sign in": "login",
 };
@@ -88,3 +88,36 @@ export const parentAppComStyle = (pathname) => {
     return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] h-[100vh_!important]"
   }
 }
+
+export const uploadURLHandler = async () => {
+  const prompt = window.prompt("type your link");
+  if (prompt) {
+    const xhr = new XMLHttpRequest();
+
+    // Use JSFiddle logo as a sample image to avoid complicating
+    // this example with cross-domain issues.
+    xhr.open("GET", prompt, true);
+
+    // Ask for the result as an ArrayBuffer.
+    xhr.responseType = "arraybuffer";
+
+    xhr.onload = function (e) {
+      // Obtain a blob: URL for the image data.
+      const arrayBufferView = new Uint8Array(this.response);
+      const types = ["mp4", "jpg"];
+      const getType = types.find((e) => prompt.includes(e));
+
+      const blob = new Blob([arrayBufferView], {
+        type: `${getType === "mp4" ? "video/mp4" : "image/jpg"}`,
+      });
+      // const urlCreator = window.URL || window.webkitURL;
+      // const imageUrl = urlCreator.createObjectURL(blob);
+      const file = new File([blob], `img (${uploadItems.length})`, {
+        type: blob.type,
+      });
+      setUploadItems((prev) => [...prev, file]);
+    };
+
+    xhr.send();
+  }
+};

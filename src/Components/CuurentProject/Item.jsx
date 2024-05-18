@@ -44,8 +44,8 @@ const Item = ({ item }) => {
 
   const activePreview = () => {
     return item.includes("mp4")
-      ? projects.find((project) => project.name === name).video
-      : projects.find((project) => project.name === name).image;
+      ? projects.find((project) => project.name === name)?.video
+      : projects.find((project) => project.name === name)?.image;
   };
 
   useEffect(() => {

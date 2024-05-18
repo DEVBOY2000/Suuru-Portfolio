@@ -812,6 +812,10 @@ video {
   height: 2rem;
 }
 
+.h-\[100svh\] {
+  height: 100svh;
+}
+
 .h-\[100vh_\!important\] {
   height: 100vh !important;
 }
@@ -844,8 +848,16 @@ video {
   height: calc(500px - 57px);
 }
 
+.h-\[svh\] {
+  height: svh;
+}
+
 .h-full {
   height: 100%;
+}
+
+.h-\[calc\(100svh_-_57px\)\] {
+  height: calc(100svh - 57px);
 }
 
 .h-screen {
@@ -908,6 +920,10 @@ video {
   width: 30px;
 }
 
+.w-\[33px\] {
+  width: 33px;
+}
+
 .w-\[40px\] {
   width: 40px;
 }
@@ -938,10 +954,6 @@ video {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-\[33px\] {
-  width: 33px;
 }
 
 .min-w-fit {
@@ -1226,19 +1238,9 @@ video {
      object-position: left;
 }
 
-.object-right {
-  -o-object-position: right;
-     object-position: right;
-}
-
 .object-top {
   -o-object-position: top;
      object-position: top;
-}
-
-.object-\[90\%\] {
-  -o-object-position: 90%;
-     object-position: 90%;
 }
 
 .p-2 {
@@ -1643,6 +1645,10 @@ video {
     height: calc(100vh - (3rem + 57px));
   }
 
+  .xs\:h-\[calc\(100svh_-_\(3rem_\+_57px\)\)\] {
+    height: calc(100svh - (3rem + 57px));
+  }
+
   .xs\:w-\[350px\] {
     width: 350px;
   }
@@ -1694,10 +1700,6 @@ video {
 
   .sm\:w-\[600px\] {
     width: 600px;
-  }
-
-  .sm\:w-auto {
-    width: auto;
   }
 
   .sm\:min-w-\[600px\] {

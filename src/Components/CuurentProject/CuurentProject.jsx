@@ -4,11 +4,14 @@ import { useScrollToTop } from "../../Hooks/useScrollToTop";
 import CurrentView from "./CurrentView";
 import Items from "./Items";
 import RestItems from "./RestItems";
+import useProjectsDB from "../../Hooks/useProjectsDB";
 
 const CuurentProject = () => {
   const { currentView } = useContext(AppContext);
 
   useScrollToTop(currentView);
+
+  useProjectsDB();
 
   return (
     <div className="flex flex-col">

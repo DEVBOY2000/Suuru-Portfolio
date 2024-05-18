@@ -24,6 +24,8 @@ export const AppContextProvider = ({ children }) => {
     type: "",
     state: false,
   });
+  const [uploadingState, setUploadingState] = useState(false);
+
   const [rememberMe, setRememberMe] = useState(false);
 
   const [signIn, setSignIn] = useState(() => {
@@ -51,6 +53,7 @@ export const AppContextProvider = ({ children }) => {
     setCurrentIcon,
     editingOpration,
     setEditingOpration,
+    uploadingState, setUploadingState,
     rememberMe,
     setRememberMe,
     signIn,

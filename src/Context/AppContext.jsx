@@ -33,6 +33,10 @@ export const AppContextProvider = ({ children }) => {
       ? JSON.parse(sessionStorage.getItem("auth"))
       : {};
   });
+  const [MoreItems, setMoreItems] = useState(false);
+  const [currentRestItems, setCurrentRestItems] = useState([]);
+
+
 
   const sharedValues = {
     projects,
@@ -58,9 +62,11 @@ export const AppContextProvider = ({ children }) => {
     setRememberMe,
     signIn,
     setSignIn,
+    MoreItems, setMoreItems,
+    currentRestItems, setCurrentRestItems,
 
-    nextView: () => nextView(currentProjectItems, currentView, setCurrentView),
-    prevView: () => prevView(currentProjectItems, currentView, setCurrentView),
+    nextView: () => nextView(currentRestItems, currentView, setCurrentView),
+    prevView: () => prevView(currentRestItems, currentView, setCurrentView),
     // del_undel_handler: (currTargetView) =>
     //   del_undel_handler(
     //     setDeletionState,

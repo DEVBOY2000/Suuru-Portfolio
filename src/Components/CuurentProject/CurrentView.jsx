@@ -13,6 +13,7 @@ const CurrentView = () => {
     currentView,
     setCurrentView,
     currentProjectItems,
+    currentRestItems,
     nextView,
     prevView,
   } = useContext(AppContext);
@@ -21,7 +22,7 @@ const CurrentView = () => {
 
   //handling current content
   useEffect(() => {
-    setCurrentView(currentProjectItems[0]);
+    setCurrentView(currentRestItems[0]);
   }, [currentProjectItems.length, name]);
   
   const activePreview = () => {
@@ -31,7 +32,7 @@ const CurrentView = () => {
   };
 
   return (
-    <div className="relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100svh_-_57px)] xs:h-[calc(100svh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden">
+    <div className="relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100dvh_-_57px)] xs:h-[calc(100dvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden">
       {currentView.includes(activePreview()) ? (
         <FontAwesomeIcon
           icon="fa-solid fa-eye"

@@ -15,20 +15,21 @@ const Projects = () => {
     useProjectsDB()
   return (
     <>
-      <SearchProject />
       <div
         id="projects"
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 auto-rows-[400px] xs:auto-rows-[450px] sm:auto-rows-[500px] gap-3 p-2 min-h-[calc(100vh_-_(57px))] "
         // onMouseUp={console.log("out")}
       >
-        {viewedProjectsHandler().map((project, key) => (
-          <Project
-            //  projectName={project}
-            //  details={projects[project]}
-            project={project}
-            key={key}
-          />
-        ))}
+        <SearchProject />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 auto-rows-[400px] xs:auto-rows-[450px] sm:auto-rows-[500px] gap-3 p-2 min-h-[calc(100vh_-_(57px))] ">
+          {viewedProjectsHandler().map((project, key) => (
+            <Project
+              //  projectName={project}
+              //  details={projects[project]}
+              project={project}
+              key={key}
+            />
+          ))}
+        </div>
       </div>
     </>
   );

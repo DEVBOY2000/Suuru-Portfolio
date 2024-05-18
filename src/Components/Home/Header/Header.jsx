@@ -21,7 +21,7 @@ const Header = () => {
   }, [URL]);
 
   return (
-    <div className="h-[svh] relative">
+    <div className="h-[dvh] relative">
       <video
         loop
         muted

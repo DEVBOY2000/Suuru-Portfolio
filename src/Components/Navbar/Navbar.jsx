@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Lists from "./Lists";
 import ListsMobView from "./ListsMobView";
 import useMediaQuery from "../../Hooks/useMediaQuery";
@@ -28,6 +28,8 @@ const Navbar = () => {
     },
     [pathname, scrollTop]
   );
+
+  const navTo = useNavigate()
 
   useEffect(() => {
     setListsState(false);
@@ -58,7 +60,7 @@ const Navbar = () => {
         }
       )}`}
     >
-      <div>
+      <div onClick={() => navTo("/Suuru-Portfolio")} className="cursor-pointer">
         <h3 className="uppercase text-[16px] tracking-[7px] leading-[15px] font-bold">
           suuru
         </h3>

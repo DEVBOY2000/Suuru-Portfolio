@@ -20,10 +20,10 @@ const Items = () => {
     deletionState,
     setCurrentView,
     currentView,
+    MoreItems,
+    setMoreItems,
+    currentRestItems, setCurrentRestItems
   } = useContext(AppContext);
-
-  const [currentItems, setCurrentItems] = useState([]);
-  const [MoreItems, setMoreItems] = useState(false);
 
   const { name } = useParams();
 
@@ -31,9 +31,6 @@ const Items = () => {
 
   useScrollToElement("items", deletionState);
 
-  // useEffect(() => {
-  //   setCurrentItems(currentProjectItems[0]);
-  // }, [currentView]);
 
   //get currentProjectItems
   useEffect(() => {
@@ -47,10 +44,26 @@ const Items = () => {
           const videos = [...result.filter((e) => e.includes("mp4"))];
           const imgs = [...result.filter((e) => !e.includes("mp4"))];
           setCurrentProjectItems([...videos, ...imgs]);
+          setCurrentRestItems([...videos, ...imgs].slice(0, 10))
         })
       )
     );
   }, [name]);
+
+  useEffect(() => {
+    const length = 10;
+    let timer;
+
+      if (MoreItems && currentRestItems.length) {
+        timer = setTimeout(() => {currentRestItems
+          setCurrentRestItems(currentProjectItems.slice(0, length + currentRestItems.length))
+          setMoreItems(false)
+        }, 700);        
+      }
+
+      return () => clearTimeout(timer)
+    
+  }, [currentRestItems.length,MoreItems])
 
   return (
     <>
@@ -59,7 +72,7 @@ const Items = () => {
         id="items"
         className="min-h-[calc(100vh_-_(57px_+_24px_+_72px))] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 auto-rows-[450px] lg:auto-rows-[500px] gap-3 mx-3"
       >
-        {currentProjectItems.map((item, i) => (
+        {currentRestItems.map((item, i) => (
           <Item item={item} index={i} key={i} />
         ))}
       </div>

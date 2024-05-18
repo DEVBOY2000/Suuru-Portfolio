@@ -17,7 +17,7 @@ const CuurentProject = () => {
     <div className="flex flex-col">
       <CurrentView />
       <Items />
-      {/* <RestItems /> */}
+      <RestItems/>
     </div>
   );
 };

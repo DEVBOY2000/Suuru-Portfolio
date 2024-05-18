@@ -1,6 +1,6 @@
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
-import { deleteObject, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, ref } from "firebase/storage";
 import { storage } from "../Firebase/Firebase";
 import { unEncodedStr } from "../Utils/constants";
 

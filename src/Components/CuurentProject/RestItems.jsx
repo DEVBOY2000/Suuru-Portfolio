@@ -1,6 +1,25 @@
+import { useContext, useEffect, useRef } from "react";
+import { AppContext } from "../../Context/AppContext";
+
 const RestItems = () => {
+  const { setMoreItems} = useContext(AppContext)
+  const restItemsRef = useRef()
+
+  useEffect(() => {
+    function scrollHandler () {
+      const { innerHeight} = this;
+      const x = restItemsRef.current.getBoundingClientRect()
+      if (x.bottom <= innerHeight) {
+        setMoreItems(true)
+      } else setMoreItems(false)
+    }
+    window.addEventListener("scroll", scrollHandler)
+    return () => window.removeEventListener("scroll", scrollHandler)
+  }, [])
+
+  
   return (
-    <div role="status" className="py-8 mx-auto">
+    <div role="status" className="py-8 mx-auto" ref={restItemsRef}>
       <svg
         aria-hidden="true"
         className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

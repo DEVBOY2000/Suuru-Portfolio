@@ -7,7 +7,7 @@ import RestItems from "./RestItems";
 import useProjectsDB from "../../Hooks/useProjectsDB";
 
 const CuurentProject = () => {
-  const { currentView } = useContext(AppContext);
+  const { currentView,currentProjectItems, currentRestItems } = useContext(AppContext);
 
   useScrollToTop(currentView);
 
@@ -17,7 +17,7 @@ const CuurentProject = () => {
     <div className="flex flex-col">
       <CurrentView />
       <Items />
-      <RestItems/>
+      {currentRestItems < currentProjectItems && <RestItems/>}
     </div>
   );
 };

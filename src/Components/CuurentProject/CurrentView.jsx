@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import Loading from "../../Reuseable Components/Loading";
 import ActivePreview from "./ActivePreview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useMediaQuery from "../../Hooks/useMediaQuery";
 
 const CurrentView = () => {
   const {
@@ -22,7 +23,11 @@ const CurrentView = () => {
 
   const { name } = useParams();
 
-  const ref = useRef()
+  const componentRef = useRef()
+
+  const videoRef = useRef()
+
+  const isMobileView = useMediaQuery("(max-width : 437px)");
 
   //handling current content
   useEffect(() => {
@@ -30,19 +35,29 @@ const CurrentView = () => {
   }, [currentProjectItems.length, name]);
 
   useEffect(() => {
-
     function scrollHandler() {
       const itemsComponent = document.getElementById("items").getBoundingClientRect().top;
-      const currentViewRef = ref.current.clientHeight
+      const currentViewRef = componentRef.current.clientHeight
       const value = Math.round(itemsComponent / currentViewRef * 100) / 100
       if (value <= 1 && value >= 0) {
         setOpacity(value)
       }
     }
-
     window.addEventListener("scroll", scrollHandler)
     return () => window.removeEventListener("scroll", scrollHandler)
   })
+
+  useEffect(() => {
+    function scrollHandler() {
+      if (!videoRef.current) return //must be video tag
+      if (isMobileView && opacity <= 0.50) {
+        videoRef.current.pause()
+      } else videoRef.current.play()
+    }
+
+    window.addEventListener("scroll", scrollHandler);
+    return () => window.removeEventListener("scroll", scrollHandler)
+  }, [opacity])
   
   const activePreview = () => {
     return currentView.includes("mp4")
@@ -50,10 +65,11 @@ const CurrentView = () => {
       : projects.find((project) => project.name === name)?.image;
   };
 
+
   return (
-    <div className="sticky top-0 z-0 sm:z-auto sm:relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100dvh_-_57px)] xs:h-[calc(100dvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden"
-         ref={ref}
-         style={{opacity}}
+    <div className="sticky top-0 z-0 sm:z-auto xs:relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100lvh_-_57px)] xs:h-[calc(100lvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden"
+         ref={componentRef}
+         style={{opacity : isMobileView ? opacity : 1}}
     >
       {currentView.includes(activePreview()) ? (
         <FontAwesomeIcon
@@ -83,6 +99,7 @@ const CurrentView = () => {
           playsInline
           preload="auto"
           src={currentView}
+          ref={videoRef}
         >
           <source type="video/mp4" src={currentView}></source>
         </video>

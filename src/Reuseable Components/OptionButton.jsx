@@ -8,7 +8,7 @@ const OptionButton = ({ children, style, id, state, name, signInState }) => {
   const navTo = useNavigate();
   const { name: projectName } = useParams();
   const stateHandler = () => (state ? "active" : "not-active");
-  const elementClass = `active:scale-95 select-none absolute ${style} w-[40px] h-[40px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center`;
+  const elementClass = `${id === "DownloadButton" ? (signInState ? "active:scale-95" : "") : ""} select-none absolute ${style} w-[40px] h-[40px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center`;
   const logIn = signInState
     ? "cursor-pointer opacity-1"
     : id === "UploadButton" || id === "DeleteButton"

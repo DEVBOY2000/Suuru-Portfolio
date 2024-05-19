@@ -682,10 +682,6 @@ video {
   top: 57px;
 }
 
-.bottom-\[57px\] {
-  bottom: 57px;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -708,6 +704,10 @@ video {
 
 .z-40 {
   z-index: 40;
+}
+
+.z-50 {
+  z-index: 50;
 }
 
 .order-3 {
@@ -836,6 +836,10 @@ video {
   height: 60px;
 }
 
+.h-\[80px\] {
+  height: 80px;
+}
+
 .h-\[calc\(100dvh_-_57px\)\] {
   height: calc(100dvh - 57px);
 }
@@ -860,16 +864,8 @@ video {
   height: 100vh;
 }
 
-.h-\[32px\] {
-  height: 32px;
-}
-
-.h-\[62px\] {
-  height: 62px;
-}
-
-.h-\[80px\] {
-  height: 80px;
+.h-\[calc\(100lvh_-_57px\)\] {
+  height: calc(100lvh - 57px);
 }
 
 .max-h-\[100\%\] {
@@ -1292,11 +1288,6 @@ video {
   padding-bottom: 0.75rem;
 }
 
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .pl-4 {
   padding-left: 1rem;
 }
@@ -1447,6 +1438,10 @@ video {
 
 .opacity-\[0\.4\] {
   opacity: 0.4;
+}
+
+.opacity-\[50\] {
+  opacity: 50;
 }
 
 .shadow {
@@ -1644,6 +1639,10 @@ video {
 }
 
 @media (min-width: 437px) {
+  .xs\:relative {
+    position: relative;
+  }
+
   .xs\:my-6 {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
@@ -1651,6 +1650,10 @@ video {
 
   .xs\:h-\[calc\(100dvh_-_\(3rem_\+_57px\)\)\] {
     height: calc(100dvh - (3rem + 57px));
+  }
+
+  .xs\:h-\[calc\(100lvh_-_\(3rem_\+_57px\)\)\] {
+    height: calc(100lvh - (3rem + 57px));
   }
 
   .xs\:w-\[350px\] {

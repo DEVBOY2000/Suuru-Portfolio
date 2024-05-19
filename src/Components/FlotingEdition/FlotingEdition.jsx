@@ -46,7 +46,7 @@ const FlotingEdition = () => {
   }, [name]);
 
   return (
-    <div className="sticky bottom-5 float-right right-5 min-h-[60px] mb-[92px] sx:mb-[96px] sm:mb-[72px] z-40 flex gap-2">
+    <div className="sticky bottom-5 float-right right-5 min-h-[60px] mb-[92px] sx:mb-[96px] sm:mb-[72px] z-50 flex gap-2">
       <button
         className="active:scale-95 select-none relative z-30 w-[60px] h-[60px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center"
         onClick={editingButtonHandler}

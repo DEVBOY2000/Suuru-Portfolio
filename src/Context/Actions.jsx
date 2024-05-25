@@ -20,14 +20,6 @@ export const prevView = (items, currView, handler) => {
     : handler(items[items.length - 1]);
 };
 
-export const del_undel_handler = (
-  setDeletionState,
-  setDeletedItems,
-  deletionState
-) => {
-  return setDeletionState(!deletionState), setDeletedItems([]);
-};
-
 export const toggleEditHandler = (
   editState,
   setEditState,
@@ -82,17 +74,19 @@ export const deletedItemsHandler = (
   setCurrentProjectItems,
   setCurrentIcon,
   setEditingOpration,
-  setSelectedItems
+  setSelectedItems,
 ) => {
   selectedItems.forEach((item) => {
     const itemRef = ref(storage, `${item}`);
     deleteObject(itemRef).finally(() => {
-      setCurrentProjectItems((prev) => {
-        const filteredItems = prev.filter(
+
+      function filteringItems(prevState) {
+        const filteredItems = prevState.filter(
           (item) => !selectedItems.includes(item)
         );
         return filteredItems;
-      });
+      }
+      setCurrentProjectItems((prev) => filteringItems(prev));
       resetEditingStateHandler(
         setCurrentIcon,
         setEditingOpration,

@@ -1,8 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { AppContext } from "../../Context/AppContext";
 
-const UploadItem = ({ item, setState, state, uploadingState }) => {
+const UploadItem = ({ item, setState, state, uploadingState, index }) => {
+  const {currUploadingIndex} = useContext(AppContext)
   const [progresspercent, setProgresspercent] = useState("60");
   const [videoState, setVideoState] = useState(false);
 
@@ -39,7 +41,7 @@ const UploadItem = ({ item, setState, state, uploadingState }) => {
     >
       {contnetType(item.type.includes("image") ? "img" : "mp4")}
       {!uploadingState ? deleteIcon() : false}
-      {uploadingState ? (
+      {(uploadingState && index === currUploadingIndex) ? (
         <div
           className={`loading absolute w-full h-full bg-black/30 backdrop-blur-sm bottom-0 z-10`}
         >

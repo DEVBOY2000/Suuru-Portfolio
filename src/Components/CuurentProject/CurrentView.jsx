@@ -31,8 +31,9 @@ const CurrentView = () => {
 
   //handling current content
   useEffect(() => {
-    setCurrentView(currentRestItems[0]);
+    !currentView && setCurrentView(currentProjectItems[0]);
   }, [currentProjectItems.length, name]);
+
 
   useEffect(() => {
     function scrollHandler() {
@@ -50,7 +51,7 @@ const CurrentView = () => {
   useEffect(() => {
     function scrollHandler() {
       if (!videoRef.current) return //must be video tag
-      if (isMobileView && opacity <= 0.50) {
+      if (isMobileView && opacity <= 0.60) {
         videoRef.current.pause()
       } else videoRef.current.play()
     }
@@ -67,11 +68,11 @@ const CurrentView = () => {
 
 
   return (
-    <div className="sticky top-0 z-0 sm:z-auto xs:relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100lvh_-_57px)] xs:h-[calc(100lvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden"
+    <article className="sticky top-[57px] xs:top-auto z-0 xs:z-auto xs:relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100lvh_-_57px)] xs:h-[calc(100lvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden"
          ref={componentRef}
          style={{opacity : isMobileView ? opacity : 1}}
     >
-      {currentView.includes(activePreview()) ? (
+      {currentView?.includes(activePreview()) ? (
         <FontAwesomeIcon
           icon="fa-solid fa-eye"
           className="absolute top-3 left-5 dark:text-white z-10"
@@ -116,7 +117,7 @@ const CurrentView = () => {
         className="w-[40px] h-[40px] p-[13px] rounded-full absolute top-1/2 right-5 cursor-pointer z-10 text-white bg-white "
         onClick={nextView}
       />
-    </div>
+    </article>
   );
 };
 

@@ -5,7 +5,7 @@ import { useState, memo, useContext } from "react";
 import { AppContext } from "../../../Context/AppContext";
 
 const Project = ({ project }) => {
-  const { setProjects } = useContext(AppContext);
+  const { setProjects, setProjectName } = useContext(AppContext);
 
   // const mouseEnterHandler = () => {
   //   const result = projects.map((item) => {
@@ -28,6 +28,7 @@ const Project = ({ project }) => {
   return (
     <Link
       to={`project/${project.name}`}
+      // onClick={() => setProjectName((prev) => ({prev : prev.prev, current : project.name}))}
       // onMouseEnter={mouseEnterHandler}
       // onMouseOut={mouseLeaveHandler}
       // onMouseLeave={mouseLeaveHandler}
@@ -50,7 +51,7 @@ const Project = ({ project }) => {
         ) : (
           <LazyLoadImage
             effect="blur"
-            alt={"img"}
+            alt="img"
             src={project.image}
             className="h-full w-full object-cover"
             height="100%"

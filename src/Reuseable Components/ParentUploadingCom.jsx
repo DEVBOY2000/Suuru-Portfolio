@@ -4,10 +4,10 @@ import { AppContext } from "../Context/AppContext";
 import { uploadURLHandler } from "../Utils/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHref, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const ParentUploadingCom = ({uploadingOpreation}) => {
-  const {uploadingState} = useContext(AppContext);
-  const [uploadItems, setUploadItems] = useState([]);
+  const {uploadingState, uploadItems, setUploadItems, setCurrUploadingIndex} = useContext(AppContext);
   const [dragDropState, setDragDropState] = useState(false);
 
     const dropArea = useRef();
@@ -30,8 +30,13 @@ const ParentUploadingCom = ({uploadingOpreation}) => {
             : "cursor-pointer active:scale-90"
     }`;
 
+    useEffect(() => {
+      // don't re-render when uploading
+      !uploadingState && setCurrUploadingIndex(uploadItems.length - 1)
+    }, [uploadItems.length])
 
-    return  <div
+
+    return  <section
     className="bg-gray-200 dark:bg-dark-color"
     ref={dropArea}
     onDragOver={(e) => (
@@ -45,6 +50,7 @@ const ParentUploadingCom = ({uploadingOpreation}) => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 auto-rows-[400px] xs:auto-rows-[450px] gap-3 mx-3">
           {[...uploadItems].map((item, idx) => (
               <UploadItem
+                  index={idx}
                   key={item.name + `10${idx + 1}`}
                   item={item}
                   state={uploadItems}
@@ -76,7 +82,7 @@ const ParentUploadingCom = ({uploadingOpreation}) => {
           </div>
           <button
             disabled={uploadingState}
-            onClick={(e) => uploadURLHandler(e)}
+            onClick={() => uploadURLHandler(uploadItems, setUploadItems)}
             className={`${optionButtonsStyles()}`}
           >
             URL
@@ -91,7 +97,7 @@ const ParentUploadingCom = ({uploadingOpreation}) => {
             : "border-gray-700  dark:border-gray-200"
         } rounded-lg border-dashed flex justify-center items-center gap-6 flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
       >
-        {pathName.includes("uploadToProject") && <h1 className="dark:text-white">
+        {pathName.includes("uploadToProject") && <h1 className="dark:text-white select-auto">
             upload to project {`${folderName}`}
           </h1>}
         <FontAwesomeIcon
@@ -126,7 +132,7 @@ const ParentUploadingCom = ({uploadingOpreation}) => {
         </div>
       </div>
     )}
-  </div>;
+  </section>;
 }
  
 export default ParentUploadingCom;

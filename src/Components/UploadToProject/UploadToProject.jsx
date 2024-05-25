@@ -8,13 +8,15 @@ import { AppContext } from "./../../Context/AppContext";
 import Compressor from "compressorjs";
 import ParentUploadingCom from "../../Reuseable Components/ParentUploadingCom";
 import useNavToLoginCom from "../../Hooks/useNavToLogin";
+import { useParams } from "react-router-dom";
 
 const UploadToProject = () => {
-  const { currentProjectItems, setUploadingState } = useContext(AppContext);
-
-  const [uploadItems, setUploadItems] = useState([]);
+  const { currentProjectItems, setUploadingState, uploadItems, setUploadItems, setCurrUploadingIndex} = useContext(AppContext);
+  let {currUploadingIndex} = useContext(AppContext)
 
   useNavToLoginCom()
+
+  const folderName = useParams();
 
   const uploadingOpreation = () => {
     if (!uploadItems.length) return;
@@ -30,21 +32,40 @@ const UploadToProject = () => {
       file.oldName = item.name;
       return file;
     });
-
+    
     setUploadingState(true);
 
-    Promise.all(
-      result.map(async (file) => {
-        const uploadingByType = (fileOBJ, type) => {
-          const newFile = new File([fileOBJ], fileOBJ.name, { type });
-          const projectRef = stRef(
-            storage,
-            `Projects/${folderName}/${fileOBJ.name}`
-          );
-          uploadBytes(projectRef, newFile);
-        };
-        if (file.type.includes("image")) {
-          return new Compressor(file, {
+    // Promise.all(
+    //   result.map(async (file) => {
+    //     const uploadingByType = (fileOBJ, type) => {
+    //       const newFile = new File([fileOBJ], fileOBJ.name, { type });
+    //       const projectRef = stRef(
+    //         storage,
+    //         `Projects/${folderName}/${fileOBJ.name}`
+    //       );
+    //       uploadBytes(projectRef, newFile);
+    //     };
+    //     if (file.type.includes("image")) {
+    //       return new Compressor(file, {
+    //         quality: 0.6,
+    //         convertTypes: "image/jpg",
+    //         convertSize: 700000,
+    //         width: 1200,
+    //         height: 1600,
+    //         success(blob) {
+    //           return uploadingByType(blob, "image/jpg");
+    //         },
+    //       });
+    //     } else return uploadingByType(file, "video/mp4");
+    //   })
+    // )
+    //   .then(() => setUploadItems([]))
+    //   .finally(() => setUploadingState(false));
+
+    function uploading() {
+      if (currUploadingIndex >= 0) {
+        if (result[currUploadingIndex].type.includes("image")) {
+          return new Compressor(result[currUploadingIndex], {
             quality: 0.6,
             convertTypes: "image/jpg",
             convertSize: 700000,
@@ -54,13 +75,38 @@ const UploadToProject = () => {
               return uploadingByType(blob, "image/jpg");
             },
           });
-        } else return uploadingByType(file, "video/mp4");
-      })
-    )
-      .then(() => setUploadItems([]))
-      .finally(() => setUploadingState(false));
+        } else return uploadingByType(result[currUploadingIndex], "video/mp4");
+      } else {
+        setUploadItems([]);
+        setUploadingState(false)
+      }
 
-      function lastItemIndex() {
+      function uploadingByType(fileOBJ, type) {
+        let timer;
+        const newFile = new File([fileOBJ], fileOBJ.name, { type });
+        const projectRef = stRef(
+          storage,
+          `Projects/${folderName.name}/${fileOBJ.name}`
+        );
+        timer = setTimeout(async() => {
+          if (currUploadingIndex >= 0) {
+            try {
+              await uploadBytes(projectRef, newFile)
+              setUploadItems(uploadItems.slice(0, currUploadingIndex))
+              setCurrUploadingIndex(currUploadingIndex -=1 );
+              currUploadingIndex < 0 && clearTimeout(timer);
+              uploading()
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        }, 300)
+      };
+    }
+
+    uploading();
+
+    function lastItemIndex() {
         function stringHandler(item, itemIndex, itemType, RGEX) {
           const regex = new RegExp(`[${RGEX}.()]`, "gi");
           return +item
@@ -88,8 +134,9 @@ const UploadToProject = () => {
         );
     
         return { lastImgIndex, lastVideoIndex };
-      }
+    }
   };
+
 
   return  <ParentUploadingCom uploadingOpreation={uploadingOpreation}/>;
 };

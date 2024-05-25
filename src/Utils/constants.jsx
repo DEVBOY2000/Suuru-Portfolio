@@ -89,7 +89,7 @@ export const parentAppComStyle = (pathname) => {
   }
 }
 
-export const uploadURLHandler = async () => {
+export const uploadURLHandler = async (uploadItems, setUploadItems) => {
   const prompt = window.prompt("type your link");
   if (prompt) {
     const xhr = new XMLHttpRequest();

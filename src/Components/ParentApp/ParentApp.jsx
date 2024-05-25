@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Outlet, useHref } from "react-router-dom";
+import { Outlet, useHref, useParams } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import FlotingEdition from "../FlotingEdition/FlotingEdition";
@@ -9,26 +9,43 @@ import { globalIcons } from "../../Utils/GlobalIcons";
 import { parentAppComStyle } from "../../Utils/constants";
 
 const ParentApp = () => {
-  const { editState, setSearchedProjects,setCurrentView, setCurrentProjectItems } = useContext(AppContext);
+  const { 
+          editState,
+          setMoreItems,
+          setSearchedProjects,
+          setCurrentView,
+          setCurrentProjectItems,
+          setUploadItems,
+          setCurrUploadingIndex,
+        } = useContext(AppContext);
 
   const  pathname  = useHref();
 
+  const {name} = useParams();
+  
   useEffect(() => {
-    setSearchedProjects([])
-    setCurrentView("")
-    setCurrentProjectItems([])
+    if ((pathname.includes("uploadToProject") || pathname.includes("uploadProject"))) return;
+    
+    setCurrUploadingIndex(0);
+    setUploadItems([])
+    setSearchedProjects([]);
+
+    setCurrentProjectItems([]);
+    setCurrentView("");
+    setMoreItems({state : false, pageToken : "", noMoreITems : false})
+
   }, [pathname])
 
   return (
-    <div className="dark:bg-dark-color bg-white">
+    <main className="dark:bg-dark-color bg-white">
       <Navbar />
-      <div className={`relative ${parentAppComStyle(pathname)}`}>
+      <section className={`relative ${parentAppComStyle(pathname)}`}>
         <Outlet />
-      </div>
+      </section>
       {pathname.includes("/Suuru-Portfolio/project/") && <FlotingEdition />}
       <Footer />
       {pathname !== "/Suuru-Portfolio" && editState && <Modal />}
-    </div>
+    </main>
   );
 };
 

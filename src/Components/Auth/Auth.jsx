@@ -77,8 +77,8 @@ const Auth = () => {
   }, [randomNumber]);
 
   return (
-    <div className="relative text-white normal-case h-full">
-      <div className="absolute w-full h-full top-0 left-0">
+    <section className="relative text-white normal-case h-full">
+      <article className="absolute w-full h-full top-0 left-0">
         <div className="relative w-full h-full">
           {/* <img src={img} className="w-full h-full object-cover object-left" /> */}
           <video
@@ -94,8 +94,8 @@ const Auth = () => {
             <source src={loginVideos[randomNumber]?.src} type="video/mp4" />
           </video>
         </div>
-      </div>
-      <div className="w-[90%] xs:w-[350px] bg-black/35 backdrop-blur-sm rounded-md absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col p-7 gap-6">
+      </article>
+      <article className="w-[90%] xs:w-[350px] bg-black/35 backdrop-blur-sm rounded-md absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col p-7 gap-6">
         <h1 className="font-bold text-4xl text-center">login</h1>
         <form
           onSubmit={(e) => loginForm(e)}
@@ -165,8 +165,8 @@ const Auth = () => {
             register
           </a>
         </h6>
-      </div>
-    </div>
+      </article>
+    </section>
   );
 };
 

@@ -48,6 +48,7 @@ const Item = ({ item }) => {
       : projects.find((project) => project.name === name)?.image;
   };
 
+
   useEffect(() => {
     if (checked && !editingOpration.state) {
       setCheckedState(false);

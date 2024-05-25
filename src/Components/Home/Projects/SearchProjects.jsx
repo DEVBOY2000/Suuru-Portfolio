@@ -17,14 +17,14 @@ const SearchProject = () => {
   };
 
   return (
-    <div className="flex justify-center pt-2 px-2">
+    <form className="flex justify-center pt-2 px-2" onChange={(e) => e.preventDefault()}>
       <input
         onChange={({ target }) => searchingHandler(target.value)}
         type="search"
         placeholder="project name"
         className="p-2 border-2 outline-none rounded-md dark:border-white border-black w-full xs:w-auto"
       />
-    </div>
+    </form>
   );
 };
 

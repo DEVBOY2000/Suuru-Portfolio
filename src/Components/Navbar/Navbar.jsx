@@ -32,7 +32,7 @@ const Navbar = () => {
   const navTo = useNavigate()
 
   useEffect(() => {
-    setListsState(false);
+    listsState && setListsState(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div
+    <nav
       id="navbar"
       className={`fixed z-30 p-3 w-full text-white flex sm:justify-between items-center transition-colors  ${StylesHandler(
         {
@@ -76,7 +76,7 @@ const Navbar = () => {
       )}
 
       {listsState && <ListsMobView StylesHandler={StylesHandler} />}
-    </div>
+    </nav>
   );
 };
 

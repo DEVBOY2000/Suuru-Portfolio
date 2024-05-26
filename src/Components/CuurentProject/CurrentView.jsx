@@ -14,9 +14,8 @@ const CurrentView = () => {
     currentView,
     setCurrentView,
     currentProjectItems,
-    currentRestItems,
     nextView,
-    prevView,
+    prevView
   } = useContext(AppContext);
 
   const [opacity, setOpacity] = useState(1);
@@ -49,11 +48,14 @@ const CurrentView = () => {
   })
 
   useEffect(() => {
+
     function scrollHandler() {
-      if (!videoRef.current) return //must be video tag
-      if (isMobileView && opacity <= 0.60) {
-        videoRef.current.pause()
-      } else videoRef.current.play()
+      if (currentView && !videoRef.current) return; //must be video tag
+      if (videoRef.current?.readyState >= 3) {
+        if (isMobileView && opacity <= 0.60) {
+          videoRef.current.pause()
+        } else videoRef.current.play()
+      }
     }
 
     window.addEventListener("scroll", scrollHandler);
@@ -63,8 +65,9 @@ const CurrentView = () => {
   const activePreview = () => {
     return currentView.includes("mp4")
       ? projects.find((project) => project.name === name)?.video
-      : projects.find((project) => project.name === name)?.image;
+      : projects.find((project) => project.name === name)?.image.replace("Prviews%2F","");
   };
+
 
 
   return (

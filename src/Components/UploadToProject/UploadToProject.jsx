@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { storage } from "../../Firebase/Firebase";
 import {
+  listAll,
   ref as stRef,
   uploadBytes,
 } from "firebase/storage";
@@ -9,10 +10,12 @@ import Compressor from "compressorjs";
 import ParentUploadingCom from "../../Reuseable Components/ParentUploadingCom";
 import useNavToLoginCom from "../../Hooks/useNavToLogin";
 import { useParams } from "react-router-dom";
+import useProjectsStorage from "../../Hooks/useProjectsStorage";
 
 const UploadToProject = () => {
   const { currentProjectItems, setUploadingState, uploadItems, setUploadItems, setCurrUploadingIndex} = useContext(AppContext);
-  let {currUploadingIndex} = useContext(AppContext)
+  let {currUploadingIndex} = useContext(AppContext);
+  const [projectFiles, setProjectFiles] = useState({lastVideoIndex: 0, lastImageIndex : 0});
 
   useNavToLoginCom()
 
@@ -25,8 +28,8 @@ const UploadToProject = () => {
       const file = new File(
         [item],
         item.type.includes("mp4")
-          ? `animation (${lastItemIndex().lastVideoIndex + 1 + index}).mp4`
-          : `extra (${lastItemIndex().lastImgIndex + 1 + index}).jpg`,
+          ? `animation (${projectFiles.lastVideoIndex + 1 + index}).mp4`
+          : `extra (${projectFiles.lastImageIndex + 1 + index}).jpg`,
         { type: item.type }
       );
       file.oldName = item.name;
@@ -34,33 +37,7 @@ const UploadToProject = () => {
     });
     
     setUploadingState(true);
-
-    // Promise.all(
-    //   result.map(async (file) => {
-    //     const uploadingByType = (fileOBJ, type) => {
-    //       const newFile = new File([fileOBJ], fileOBJ.name, { type });
-    //       const projectRef = stRef(
-    //         storage,
-    //         `Projects/${folderName}/${fileOBJ.name}`
-    //       );
-    //       uploadBytes(projectRef, newFile);
-    //     };
-    //     if (file.type.includes("image")) {
-    //       return new Compressor(file, {
-    //         quality: 0.6,
-    //         convertTypes: "image/jpg",
-    //         convertSize: 700000,
-    //         width: 1200,
-    //         height: 1600,
-    //         success(blob) {
-    //           return uploadingByType(blob, "image/jpg");
-    //         },
-    //       });
-    //     } else return uploadingByType(file, "video/mp4");
-    //   })
-    // )
-    //   .then(() => setUploadItems([]))
-    //   .finally(() => setUploadingState(false));
+    uploading();
 
     function uploading() {
       if (currUploadingIndex >= 0) {
@@ -103,40 +80,18 @@ const UploadToProject = () => {
         }, 300)
       };
     }
-
-    uploading();
-
-    function lastItemIndex() {
-        function stringHandler(item, itemIndex, itemType, RGEX) {
-          const regex = new RegExp(`[${RGEX}.()]`, "gi");
-          return +item
-            .substring(itemIndex, item.indexOf(itemType))
-            .replace("%20", "")
-            .replace(regex, "")
-            .toLowerCase();
-        }
-    
-        const lastImgIndex = Math.max(
-          ...currentProjectItems.map((item, _, array) => {
-            const types = ["jpg", "jpeg"];
-            const imgType = types.filter((type) => item.includes(type))[0];
-            const imgIndex = item.indexOf("extra");
-            return stringHandler(item, imgIndex, imgType, "a-zA-Z");
-          })
-        );
-    
-        const lastVideoIndex = Math.max(
-          ...currentProjectItems.map((item) => {
-            const videoIndex = item.indexOf("animation");
-            if (videoIndex == -1) return 0;
-            return stringHandler(item, videoIndex, ".mp4", "a-zA-Z");
-          })
-        );
-    
-        return { lastImgIndex, lastVideoIndex };
-    }
   };
 
+
+  useEffect(() => {
+    const listItemsRef = stRef(storage, `Projects/${folderName.name}`);
+      listAll(listItemsRef).then(({items}) => {
+        setProjectFiles({
+          lastVideoIndex : items.filter(item => item.name.includes("mp4")).length,
+          lastImageIndex : items.filter(item => item.name.includes("jpg")).length
+        })
+      })
+  }, [folderName.name])
 
   return  <ParentUploadingCom uploadingOpreation={uploadingOpreation}/>;
 };

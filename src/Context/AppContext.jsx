@@ -13,7 +13,7 @@ import {
 export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
-  const [projectName, setProjectName] = useState({prev : "", current : ""});
+  const [prevProjectName, setPrevProjectName] = useState("");
   const [searchedProjects, setSearchedProjects] = useState([]);
   const [currentProjectItems, setCurrentProjectItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -44,8 +44,8 @@ export const AppContextProvider = ({ children }) => {
   const sharedValues = {
     projects,
     setProjects,
-    projectName, 
-    setProjectName,
+    prevProjectName,
+    setPrevProjectName,
     searchedProjects,
     setSearchedProjects,
     currentProjectItems,

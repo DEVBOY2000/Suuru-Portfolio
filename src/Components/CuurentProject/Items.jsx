@@ -1,12 +1,10 @@
 import React, {
   useContext,
   useEffect,
-  Suspense,
   lazy,
-  useState,
   useRef,
 } from "react";
-import { getDownloadURL, list, listAll, ref } from "firebase/storage";
+import { getDownloadURL, list, ref } from "firebase/storage";
 import { storage } from "../../Firebase/Firebase";
 import { AppContext } from "../../Context/AppContext";
 import { useParams } from "react-router-dom";
@@ -18,11 +16,9 @@ const Items = () => {
     currentProjectItems,
     setCurrentProjectItems,
     deletionState,
-    setCurrentView,
-    currentView,
     MoreItems,
     setMoreItems,
-    currentRestItems, setCurrentRestItems,
+    prevProjectName,
   } = useContext(AppContext);
 
   const { name } = useParams();
@@ -31,44 +27,34 @@ const Items = () => {
 
   useScrollToElement("items", deletionState);
 
-
   //get currentProjectItems
   //use list insted of listAll to use maxResult property
   useEffect(() => {
     const listItemsRef = ref(storage, `Projects/${name}`);
     const dataStorage = async () => await list(listItemsRef, {maxResults : 10, pageToken : MoreItems.pageToken});
+    const getItems = async () => {
+      const {items, nextPageToken} = await dataStorage();
+      return Promise.all(items.map(async (item) => await getDownloadURL(item))).then((response) => {
+        setMoreItems({state : false, pageToken : nextPageToken, noMoreITems : (nextPageToken ? false : true )})
+        return response
+      })
+    }
 
-    const dataHandler = async () => {
-      const result = [];
+    dataHandler();
+
+    async function dataHandler(){
       if (!MoreItems.noMoreITems) {
         if ((!currentProjectItems.lenght && !MoreItems.state && !MoreItems.pageToken)) {
-          const {items, nextPageToken} = await dataStorage()
-          return items.map(item => {
-            getDownloadURL(item).then((res) => {
-              result.push(res);
-              const videos = [...result.filter((e) => e.includes("mp4"))];
-              const imgs = [...result.filter((e) => !e.includes("mp4"))];
-              setCurrentProjectItems([...videos, ...imgs]);
-              setMoreItems({state : false, pageToken : nextPageToken, noMoreITems : (nextPageToken ? false : true )})
-            });
-          })
+          const firstItems = await getItems();
+          setCurrentProjectItems([...firstItems]);
         } else if ((MoreItems.state && MoreItems.pageToken)) {
-          const {items, nextPageToken} = await dataStorage()
-          return items.map(item => {
-            getDownloadURL(item).then((res) => {
-              result.push(res);
-              const videos = [...result.filter((e) => e.includes("mp4"))];
-              const imgs = [...result.filter((e) => !e.includes("mp4"))];
-              setCurrentProjectItems(([...currentProjectItems, ...videos, ...imgs]));
-              setMoreItems({state : false, pageToken : nextPageToken, noMoreITems : (nextPageToken ? false : true )})
-            });
-          })
+          const restItems = await getItems();
+          setCurrentProjectItems(([...currentProjectItems, ...restItems]));
         }
       }
     } 
 
-    dataHandler()
-  }, [name,currentProjectItems.lenght , MoreItems.state]);
+  }, [name, prevProjectName ,currentProjectItems.lenght, MoreItems.state, MoreItems.pageToken, MoreItems.noMoreITems]);
 
   return (
     <>

@@ -7,6 +7,7 @@ import { AppContext } from "../../Context/AppContext";
 import Modal from "../../Modal/Modal";
 import { globalIcons } from "../../Utils/GlobalIcons";
 import { parentAppComStyle } from "../../Utils/constants";
+import usePrevState from "../../Hooks/usePrevState";
 
 const ParentApp = () => {
   const { 
@@ -17,24 +18,37 @@ const ParentApp = () => {
           setCurrentProjectItems,
           setUploadItems,
           setCurrUploadingIndex,
+          setPrevProjectName,
+          prevProjectName
         } = useContext(AppContext);
 
   const  pathname  = useHref();
 
   const {name} = useParams();
+
+  const prevProject = usePrevState(name);
+  
+  useEffect(() => {
+    if (!pathname.includes("project")) {
+      setPrevProjectName(prevProject)
+    }
+  }, [pathname])
   
   useEffect(() => {
     if ((pathname.includes("uploadToProject") || pathname.includes("uploadProject"))) return;
     
+    if ((pathname.includes("project") && name !== prevProjectName)) {
+      setCurrentProjectItems([]);
+      setCurrentView("");
+      setMoreItems({state : false, pageToken : "", noMoreITems : false})
+    }
+
     setCurrUploadingIndex(0);
     setUploadItems([])
     setSearchedProjects([]);
 
-    setCurrentProjectItems([]);
-    setCurrentView("");
-    setMoreItems({state : false, pageToken : "", noMoreITems : false})
+  }, [pathname, name, prevProjectName])
 
-  }, [pathname])
 
   return (
     <main className="dark:bg-dark-color bg-white">

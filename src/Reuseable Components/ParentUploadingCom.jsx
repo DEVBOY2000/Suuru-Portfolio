@@ -9,7 +9,6 @@ import { useEffect } from "react";
 const ParentUploadingCom = ({uploadingOpreation}) => {
   const {uploadingState, uploadItems, setUploadItems, setCurrUploadingIndex} = useContext(AppContext);
   const [dragDropState, setDragDropState] = useState(false);
-
     const dropArea = useRef();
 
     const pathName = useHref()

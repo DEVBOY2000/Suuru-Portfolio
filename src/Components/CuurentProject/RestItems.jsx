@@ -17,19 +17,6 @@ const RestItems = () => {
       setLoadingState(false)
     }
   }, [MoreItems.state])
-
-  // useEffect(() => {
-  //   function scrollHandler () {
-  //     const { innerHeight} = this;
-  //     const restItemsCom = restItemsRef.current.getBoundingClientRect()
-  //     if (restItemsCom.bottom <= innerHeight) {
-  //       setMoreItems(true)
-  //     } else setMoreItems(false)
-  //   }
-  //   window.addEventListener("scroll", scrollHandler)
-  //   return () => window.removeEventListener("scroll", scrollHandler)
-  // }, [])
-
   
   return (
     <div role="status" className="h-[80px] flex justify-center items-center relative dark:bg-dark-color bg-white " ref={restItemsRef}>

@@ -96,8 +96,8 @@ const ParentUploadingCom = ({uploadingOpreation}) => {
             : "border-gray-700  dark:border-gray-200"
         } rounded-lg border-dashed flex justify-center items-center gap-6 flex-col absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
       >
-        {pathName.includes("uploadToProject") && <h1 className="dark:text-white select-auto">
-            upload to project {`${folderName}`}
+        {pathName.includes("uploadToProject") && <h1 className="dark:text-white">
+            upload to project <span className="!select-all">{`${folderName}`}</span>
           </h1>}
         <FontAwesomeIcon
           icon="fa-solid fa-upload"

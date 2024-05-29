@@ -13,7 +13,7 @@ import video3 from "../Components/Auth/videos/video (3).mp4";
 import video4 from "../Components/Auth/videos/video (4).mp4";
 
 export const navbarLists = {
-  "home": "",
+  home: "",
   "upload project": "uploadProject",
   "sign in": "login",
 };
@@ -79,15 +79,18 @@ export const clearString = (string) => {
 
 export const parentAppComStyle = (pathname) => {
   if (pathname.replace(/\//g, "") === "Suuru-Portfolio") {
-    return "mb-[92px] sm:mb-[72px]" 
+    return "mb-[92px] sm:mb-[72px]";
   } else if (pathname.includes("/project")) {
     return "mb-[-60px] min-h-[calc(100vh_-_92px)] min-h-[calc(100vh_-_96px)] sm:min-h-[calc(100vh_-_72px)] pt-[57px]";
-  } else if (pathname.includes("/uploadProject") || pathname.includes("/uploadToProject")) {
-    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] pt-[64px] sm:mb-[72px] overflow-auto"
+  } else if (
+    pathname.includes("/uploadProject") ||
+    pathname.includes("/uploadToProject")
+  ) {
+    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] pt-[64px] sm:mb-[72px] overflow-auto";
   } else if (pathname.includes("/login")) {
-    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] h-[100vh_!important]"
+    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] h-[100vh_!important]";
   }
-}
+};
 
 export const uploadURLHandler = async (uploadItems, setUploadItems) => {
   const prompt = window.prompt("type your link");
@@ -120,4 +123,12 @@ export const uploadURLHandler = async (uploadItems, setUploadItems) => {
 
     xhr.send();
   }
+};
+
+export const activePreview = (item, projects, name) => {
+  return item.includes("mp4")
+    ? projects.find((project) => project.name === name)?.video
+    : projects
+        .find((project) => project.name === name)
+        ?.image.replace("Prviews%2F", "");
 };

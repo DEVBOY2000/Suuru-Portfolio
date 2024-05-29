@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../Context/AppContext";
-import OptionButton from "../../Reuseable Components/OptionButton";
+import OptionButton from "./OptionButton";
 import { optionButtons } from "../../Utils/constants";
 import { useParams } from "react-router-dom";
 

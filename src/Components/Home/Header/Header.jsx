@@ -31,7 +31,7 @@ const Header = () => {
         poster={Banner}
         type="video/mp4"
         src={URL}
-        style={{objectPosition : "90%"}}
+        style={{ objectPosition: "90%" }}
         alt="header"
       />
       <div className="w-full h-full absolute top-0 left-0 bg-black opacity-80"></div>

@@ -23,7 +23,12 @@ const Footer = () => {
         <ul className="flex">
           {footerIconsArray.map((list) => (
             <li key={list.name} className="m-3 block">
-              <a href={list.url} target="_blank" title={list.name} aria-label={`go to ${list.url}`}>
+              <a
+                href={list.url}
+                target="_blank"
+                title={list.name}
+                aria-label={`go to ${list.url}`}
+              >
                 <FontAwesomeIcon icon={list.icon} className="text-xl" />
               </a>
             </li>

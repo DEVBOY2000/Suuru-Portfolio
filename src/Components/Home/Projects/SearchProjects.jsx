@@ -17,7 +17,10 @@ const SearchProject = () => {
   };
 
   return (
-    <form className="flex justify-center pt-2 px-2" onChange={(e) => e.preventDefault()}>
+    <form
+      className="flex justify-center pt-2 px-2"
+      onChange={(e) => e.preventDefault()}
+    >
       <input
         id="search"
         name="search-input"

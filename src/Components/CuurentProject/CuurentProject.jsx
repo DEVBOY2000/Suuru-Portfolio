@@ -7,9 +7,7 @@ import RestItems from "./RestItems";
 import useProjectsDB from "../../Hooks/useProjectsDB";
 
 const CuurentProject = () => {
-  const { currentView,
-          MoreItems,
-        } = useContext(AppContext);
+  const { currentView, MoreItems } = useContext(AppContext);
 
   useScrollToTop(currentView);
 
@@ -19,7 +17,7 @@ const CuurentProject = () => {
     <section className="flex flex-col">
       <CurrentView />
       <Items />
-      {!MoreItems.noMoreITems && <RestItems/>}
+      {!MoreItems.noMoreITems && <RestItems />}
     </section>
   );
 };

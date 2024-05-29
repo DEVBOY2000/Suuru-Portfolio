@@ -1,27 +1,30 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { storage } from "../../Firebase/Firebase";
-import {
-  listAll,
-  ref as stRef,
-  uploadBytes,
-} from "firebase/storage";
+import { listAll, ref as stRef, uploadBytes } from "firebase/storage";
 import { AppContext } from "./../../Context/AppContext";
 import Compressor from "compressorjs";
 import ParentUploadingCom from "../../Reuseable Components/ParentUploadingCom";
 import useNavToLoginCom from "../../Hooks/useNavToLogin";
 import { useParams } from "react-router-dom";
-import useProjectsStorage from "../../Hooks/useProjectsStorage";
 
 const UploadToProject = () => {
-  const { currentProjectItems, setUploadingState, uploadItems, setUploadItems, setCurrUploadingIndex} = useContext(AppContext);
-  let {currUploadingIndex} = useContext(AppContext);
-  const [projectFiles, setProjectFiles] = useState({lastVideoIndex: 0, lastImageIndex : 0});
+  const {
+    setLoadingState,
+    uploadItems,
+    setUploadItems,
+    setCurrUploadingIndex,
+  } = useContext(AppContext);
+  let { currUploadingIndex } = useContext(AppContext);
+  const [projectFiles, setProjectFiles] = useState({
+    lastVideoIndex: 0,
+    lastImageIndex: 0,
+  });
 
-  useNavToLoginCom()
+  useNavToLoginCom();
 
   const folderName = useParams();
 
-  const uploadingOpreation = () => {
+  const uploadingOpreation = useCallback(() => {
     if (!uploadItems.length) return;
     //rename files to extra ...
     const result = [...uploadItems].map((item, index) => {
@@ -35,8 +38,8 @@ const UploadToProject = () => {
       file.oldName = item.name;
       return file;
     });
-    
-    setUploadingState(true);
+
+    setLoadingState(true);
     uploading();
 
     function uploading() {
@@ -55,7 +58,7 @@ const UploadToProject = () => {
         } else return uploadingByType(result[currUploadingIndex], "video/mp4");
       } else {
         setUploadItems([]);
-        setUploadingState(false)
+        setLoadingState(false);
       }
 
       function uploadingByType(fileOBJ, type) {
@@ -65,35 +68,36 @@ const UploadToProject = () => {
           storage,
           `Projects/${folderName.name}/${fileOBJ.name}`
         );
-        timer = setTimeout(async() => {
+        timer = setTimeout(async () => {
           if (currUploadingIndex >= 0) {
             try {
-              await uploadBytes(projectRef, newFile)
-              setUploadItems(uploadItems.slice(0, currUploadingIndex))
-              setCurrUploadingIndex(currUploadingIndex -=1 );
+              await uploadBytes(projectRef, newFile);
+              setUploadItems(uploadItems.slice(0, currUploadingIndex));
+              setCurrUploadingIndex((currUploadingIndex -= 1));
               currUploadingIndex < 0 && clearTimeout(timer);
-              uploading()
+              uploading();
             } catch (error) {
-              console.log(error)
+              console.error(error);
             }
           }
-        }, 300)
-      };
+        }, 300);
+      }
     }
-  };
-
+  }, [uploadItems.length]);
 
   useEffect(() => {
     const listItemsRef = stRef(storage, `Projects/${folderName.name}`);
-      listAll(listItemsRef).then(({items}) => {
-        setProjectFiles({
-          lastVideoIndex : items.filter(item => item.name.includes("mp4")).length,
-          lastImageIndex : items.filter(item => item.name.includes("jpg")).length
-        })
-      })
-  }, [folderName.name])
+    listAll(listItemsRef).then(({ items }) => {
+      setProjectFiles({
+        lastVideoIndex: items.filter((item) => item.name.includes("mp4"))
+          .length,
+        lastImageIndex: items.filter((item) => item.name.includes("jpg"))
+          .length,
+      });
+    });
+  }, [folderName.name]);
 
-  return  <ParentUploadingCom uploadingOpreation={uploadingOpreation}/>;
+  return <ParentUploadingCom uploadingOpreation={uploadingOpreation} />;
 };
 
 export default UploadToProject;

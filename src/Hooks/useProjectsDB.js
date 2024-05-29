@@ -25,7 +25,7 @@ const useProjectsDB = () => {
                 console.error(error);
             });
         }
-    }, [])
+    }, [projects.length])
 }
 
 export default useProjectsDB;

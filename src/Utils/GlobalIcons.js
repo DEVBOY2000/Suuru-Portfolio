@@ -10,6 +10,8 @@ import {
   faCircleUser,
   faEllipsis,
   faEye,
+  faChevronLeft,
+  faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 
 export const globalIcons = () =>
@@ -22,5 +24,7 @@ export const globalIcons = () =>
     faCheck,
     faCircleUser,
     faEllipsis,
-    faEye
+    faEye,
+    faChevronLeft,
+    faChevronRight
   );

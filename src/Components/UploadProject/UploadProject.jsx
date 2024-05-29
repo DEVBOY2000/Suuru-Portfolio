@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { storage, database } from "../../Firebase/Firebase";
-import {
-  listAll,
-  ref as storageRef,
-  uploadBytes,
-} from "firebase/storage";
+import { listAll, ref as storageRef, uploadBytes } from "firebase/storage";
 
 import { ref as dbRef, set } from "firebase/database";
 import { AppContext } from "../../Context/AppContext";
@@ -15,16 +11,21 @@ import ParentUploadingCom from "../../Reuseable Components/ParentUploadingCom";
 import useNavToLoginCom from "../../Hooks/useNavToLogin";
 
 const UploadProject = () => {
-  const {setUploadingState, uploadItems, setUploadItems, setCurrUploadingIndex } = useContext(AppContext);
-  let {currUploadingIndex} = useContext(AppContext);
+  const {
+    setLoadingState,
+    uploadItems,
+    setUploadItems,
+    setCurrUploadingIndex,
+  } = useContext(AppContext);
+  let { currUploadingIndex } = useContext(AppContext);
   const [projects, setProjects] = useState([]);
 
   //get realtime database
-  useProjectsDB()
+  useProjectsDB();
 
-  useNavToLoginCom()
+  useNavToLoginCom();
 
-  const uploadingOpreation = async () => {
+  const uploadingOpreation = useCallback(async () => {
     if (!uploadItems.length) return;
     const projectNamePrompt = window.prompt("type project name");
     if (projectNamePrompt) {
@@ -37,20 +38,22 @@ const UploadProject = () => {
           project.name.startsWith(projectNamePrompt)
         );
 
-
         if (projectExist) {
           const projectRef = storageRef(storage, projectExist.fullPath);
           const getProjectFiles = async () => await listAll(projectRef);
-          const {items} = await getProjectFiles();
+          const { items } = await getProjectFiles();
           return {
-            lastVideosIndex: items.filter(item => item.name.includes("animation")).length, 
-            lastImagesIndex : items.filter(item => item.name.includes("extra")).length
+            lastVideosIndex: items.filter((item) =>
+              item.name.includes("animation")
+            ).length,
+            lastImagesIndex: items.filter((item) => item.name.includes("extra"))
+              .length,
           };
         }
         return undefined;
       };
 
-      const projectContent = await projectExistCheck()
+      const projectContent = await projectExistCheck();
 
       //edit file index & name and type
       const fileHandler = async (items, startIndex, type, contentType) => {
@@ -70,21 +73,21 @@ const UploadProject = () => {
 
       const videos = await fileHandler(
         videosArr,
-        await projectExistCheck() ? projectContent?.lastVideosIndex + 1 : 1,
+        (await projectExistCheck()) ? projectContent?.lastVideosIndex + 1 : 1,
         "animation",
         "mp4"
       );
       const images = await fileHandler(
         imagesArr,
-        await projectExistCheck() ? projectContent?.lastImagesIndex + 1 : 1,
+        (await projectExistCheck()) ? projectContent?.lastImagesIndex + 1 : 1,
         "extra",
         "jpg"
       );
-      
+
       const result = [...videos, ...images];
 
-      const existProject = projects.find(
-        (project) => clearString(project.name).startsWith(clearString(projectNamePrompt))
+      const existProject = projects.find((project) =>
+        clearString(project.name).startsWith(clearString(projectNamePrompt))
       );
 
       function uploading() {
@@ -93,43 +96,45 @@ const UploadProject = () => {
             return new Compressor(result[currUploadingIndex], {
               quality: 0.4,
               convertTypes: "image/jpg",
-              convertSize : 800000,
+              convertSize: 800000,
               success(blob) {
                 return uploadingByType(blob, "image/jpg");
               },
             });
-          } else return uploadingByType(result[currUploadingIndex], "video/mp4");
+          } else
+            return uploadingByType(result[currUploadingIndex], "video/mp4");
         } else {
           setUploadItems([]);
-          setUploadingState(false)
+          setLoadingState(false);
         }
-  
+
         function uploadingByType(fileOBJ, type) {
           let timer;
-          const newFile = new File([fileOBJ], fileOBJ.name, {type});
+          const newFile = new File([fileOBJ], fileOBJ.name, { type });
           const projectRef = storageRef(
             storage,
-            `Projects/${existProject ? existProject?.name : projectNamePrompt}/${fileOBJ.name}`
+            `Projects/${
+              existProject ? existProject?.name : projectNamePrompt
+            }/${fileOBJ.name}`
           );
-          timer = setTimeout(async() => {
+          timer = setTimeout(async () => {
             if (currUploadingIndex >= 0) {
               try {
-                await uploadBytes(projectRef, newFile)
-                setUploadItems(uploadItems.slice(0, currUploadingIndex))
-                setCurrUploadingIndex(currUploadingIndex -=1 );
+                await uploadBytes(projectRef, newFile);
+                setUploadItems(uploadItems.slice(0, currUploadingIndex));
+                setCurrUploadingIndex((currUploadingIndex -= 1));
                 currUploadingIndex < 0 && clearTimeout(timer);
-                uploading()
+                uploading();
               } catch (error) {
-                console.log(error)
+                console.log(error);
               }
             }
-          }, 300)
-        };
+          }, 300);
+        }
       }
 
-      
       // uploading to database
-      if (!await projectExistCheck()) {
+      if (!(await projectExistCheck())) {
         const url =
           "https://firebasestorage.googleapis.com/v0/b/portofolio-6fbe1.appspot.com/o/";
         set(dbRef(database, "/" + projects.length), {
@@ -147,22 +152,20 @@ const UploadProject = () => {
           "This Project Is Exist, But These Items Will Upload To Same Project"
         );
       }
-      setUploadingState(true);
+      setLoadingState(true);
       // // uploading to storage
-      uploading()
+      uploading();
     }
-
-  };
+  }, [uploadItems.length]);
 
   useEffect(() => {
     if (!projects.length) {
       const listItemsRef = storageRef(storage, `Projects`);
-      listAll(listItemsRef).then(({prefixes}) => setProjects(prefixes))
+      listAll(listItemsRef).then(({ prefixes }) => setProjects(prefixes));
     }
-  }, [projects.length])
+  }, [projects.length]);
 
-
-  return <ParentUploadingCom uploadingOpreation={uploadingOpreation}/>;
+  return <ParentUploadingCom uploadingOpreation={uploadingOpreation} />;
 };
 
 export default UploadProject;

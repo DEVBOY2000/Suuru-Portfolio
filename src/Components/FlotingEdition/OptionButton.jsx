@@ -1,13 +1,15 @@
 import { memo, useContext } from "react";
-import "../Components/OptionButtons/OptionButtons.css";
-import { AppContext } from "../Context/AppContext";
+import { AppContext } from "../../Context/AppContext";
 import { useNavigate, useParams } from "react-router-dom";
+import "./OptionButtons.css";
 
 const OptionButton = ({ children, style, id, state, name, signInState }) => {
   const { toggleEditHandler } = useContext(AppContext);
   const navTo = useNavigate();
   const { name: projectName } = useParams();
-  const elementClass = `${id === "DownloadButton" ? (signInState ? "active:scale-95" : "") : ""} select-none absolute ${style} w-[40px] h-[40px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center`;
+  const elementClass = `${
+    id === "DownloadButton" ? (signInState ? "active:scale-95" : "") : ""
+  } select-none absolute ${style} w-[40px] h-[40px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center`;
   const buttonState = signInState
     ? "cursor-pointer opacity-1"
     : id === "UploadButton" || id === "DeleteButton"
@@ -38,7 +40,9 @@ const OptionButton = ({ children, style, id, state, name, signInState }) => {
   return (
     <button
       id={id}
-      className={`${state ? "active" : "not-active"} ${elementClass} ${buttonState}`}
+      className={`${
+        state ? "active" : "not-active"
+      } ${elementClass} ${buttonState}`}
       onClick={buttonEventHandler}
       disabled={!signInState ? (id === "DownloadButton" ? false : true) : false}
     >

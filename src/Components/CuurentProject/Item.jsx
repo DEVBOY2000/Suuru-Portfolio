@@ -2,9 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState, memo } from "react";
 import { AppContext } from "../../Context/AppContext";
 import Loading from "../../Reuseable Components/Loading";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useParams } from "react-router-dom";
+import ImageCard from "../../Reuseable Components/ImageCard";
+import VideoCard from "../../Reuseable Components/VideoCard";
+import CardType from "../../Reuseable Components/CardType";
+import { activePreview } from "../../Utils/constants";
 
 const Item = ({ item }) => {
   const {
@@ -19,16 +22,6 @@ const Item = ({ item }) => {
 
   const { name } = useParams();
 
-  const contnetType = (text) => {
-    return (
-      <div
-        className={`absolute top-[10px] right-[10px] z-10 bg-black/60 px-2 uppercase text-sm text-white`}
-      >
-        {text}
-      </div>
-    );
-  };
-
   const onClickEventHandler = () => {
     if (
       editingOpration.state &&
@@ -42,18 +35,11 @@ const Item = ({ item }) => {
     }
   };
 
-  const activePreview = () => {
-    return item.includes("mp4")
-      ? projects.find((project) => project.name === name)?.video
-      : projects.find((project) => project.name === name)?.image.replace("Prviews%2F","");
-  };
-
-
   useEffect(() => {
     if (checked && !editingOpration.state) {
       setCheckedState(false);
     }
-  }, [editingOpration]);
+  }, [editingOpration.state, checked]);
 
   return (
     <div
@@ -65,7 +51,7 @@ const Item = ({ item }) => {
       onClick={onClickEventHandler}
       title={item}
     >
-      {item.includes(activePreview()) && (
+      {item.includes(activePreview(item, projects, name)) && (
         <FontAwesomeIcon
           icon="fa-solid fa-eye"
           className="absolute top-3 left-5 dark:text-white z-10"
@@ -77,32 +63,12 @@ const Item = ({ item }) => {
           <FontAwesomeIcon icon="fa-solid fa-check" color="white" size="4x" />
         </div>
       )}
+      {<CardType text={item.includes("mp4") ? "mp4" : "img"} />}
       {item ? (
         item?.includes("mp4") ? (
-          <>
-            {contnetType("mp4")}
-
-            <video
-              playsInline
-              loading="lazy"
-              className="h-full object-cover w-full object-top"
-              src={item}
-            >
-              <source type="video/mp4" src={item}></source>
-            </video>
-          </>
+          <VideoCard src={item} />
         ) : (
-          <>
-            {contnetType("img")}
-            <LazyLoadImage
-              effect="blur"
-              alt="img"
-              src={item}
-              className="h-full object-cover w-full object-top"
-              height="100%"
-              width="100%"
-            />
-          </>
+          <ImageCard src={item} />
         )
       ) : (
         <Loading />

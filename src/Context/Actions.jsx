@@ -74,12 +74,11 @@ export const deletedItemsHandler = (
   setCurrentProjectItems,
   setCurrentIcon,
   setEditingOpration,
-  setSelectedItems,
+  setSelectedItems
 ) => {
   selectedItems.forEach((item) => {
     const itemRef = ref(storage, `${item}`);
     deleteObject(itemRef).finally(() => {
-
       function filteringItems(prevState) {
         const filteredItems = prevState.filter(
           (item) => !selectedItems.includes(item)

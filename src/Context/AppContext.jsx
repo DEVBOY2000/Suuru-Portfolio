@@ -25,7 +25,7 @@ export const AppContextProvider = ({ children }) => {
     type: "",
     state: false,
   });
-  const [uploadingState, setUploadingState] = useState(false);
+  const [loadingState, setLoadingState] = useState(false);
 
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -34,12 +34,14 @@ export const AppContextProvider = ({ children }) => {
       ? JSON.parse(sessionStorage.getItem("auth"))
       : {};
   });
-  const [MoreItems, setMoreItems] = useState({state : false, pageToken : "", noMoreITems : false});
+  const [MoreItems, setMoreItems] = useState({
+    state: false,
+    pageToken: "",
+    noMoreITems: false,
+  });
   const [currentRestItems, setCurrentRestItems] = useState([]);
   const [uploadItems, setUploadItems] = useState([]);
   const [currUploadingIndex, setCurrUploadingIndex] = useState(-1);
-
-
 
   const sharedValues = {
     projects,
@@ -62,25 +64,23 @@ export const AppContextProvider = ({ children }) => {
     setCurrentIcon,
     editingOpration,
     setEditingOpration,
-    uploadingState, setUploadingState,
+    loadingState,
+    setLoadingState,
     rememberMe,
     setRememberMe,
     signIn,
     setSignIn,
-    MoreItems, setMoreItems,
-    currentRestItems, setCurrentRestItems,
-    uploadItems, setUploadItems,
-    currUploadingIndex, setCurrUploadingIndex,
+    MoreItems,
+    setMoreItems,
+    currentRestItems,
+    setCurrentRestItems,
+    uploadItems,
+    setUploadItems,
+    currUploadingIndex,
+    setCurrUploadingIndex,
 
     nextView: () => nextView(currentProjectItems, currentView, setCurrentView),
     prevView: () => prevView(currentProjectItems, currentView, setCurrentView),
-    // del_undel_handler: (currTargetView) =>
-    //   del_undel_handler(
-    //     setDeletionState,
-    //     setDeletedItems,
-    //     deletionState,
-    //     currTargetView
-    //   ),
     toggleEditHandler: (currIconName, id) =>
       toggleEditHandler(
         editState,

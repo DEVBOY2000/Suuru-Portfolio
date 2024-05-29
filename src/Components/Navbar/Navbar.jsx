@@ -11,7 +11,7 @@ import { AppContext } from "../../Context/AppContext";
 const Navbar = () => {
   const [scrollTop, setScrollTop] = useState(false);
   const [listsState, setListsState] = useState(false);
-  const {signIn} = useContext(AppContext)
+  const { signIn } = useContext(AppContext);
 
   const { pathname } = useLocation();
 
@@ -29,11 +29,11 @@ const Navbar = () => {
     [pathname, scrollTop]
   );
 
-  const navTo = useNavigate()
+  const navTo = useNavigate();
 
   useEffect(() => {
     listsState && setListsState(false);
-  }, [pathname]);
+  }, [pathname, listsState]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,15 +66,15 @@ const Navbar = () => {
         </h3>
         <p className="text-[12px]">creative studio</p>
       </div>
-      {!lessThanDesktop && <Lists StylesHandler={StylesHandler} />}
-      {lessThanDesktop && (
+      {!lessThanDesktop ? (
+        <Lists StylesHandler={StylesHandler} />
+      ) : (
         <>
           <MobMenuIcon listsState={listsState} setListsState={setListsState} />
           <Theme StylesHandler={StylesHandler} />
           {signIn?.email && <Account />}
         </>
       )}
-
       {listsState && <ListsMobView StylesHandler={StylesHandler} />}
     </nav>
   );

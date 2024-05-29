@@ -1,20 +1,22 @@
-import React, {useContext } from "react";
+import React, {forwardRef, useContext } from "react";
 
 import Project from "./Project";
 import { AppContext } from "../../../Context/AppContext";
 import SearchProject from "./SearchProjects";
 import useProjectsDB from "../../../Hooks/useProjectsDB";
 
-const Projects = () => {
+const Projects = forwardRef(function Projects(props, ref) {
   const { projects, searchedProjects } = useContext(AppContext);
 
   const viewedProjectsHandler = () =>
     searchedProjects.length ? searchedProjects : projects;
 
-    //get realtime database
-    useProjectsDB()
+  //get realtime database
+  useProjectsDB();
+
   return (
       <section
+        ref={ref}
         id="projects"
         // onMouseUp={console.log("out")}
       >
@@ -31,6 +33,6 @@ const Projects = () => {
         </article>
       </section>
   );
-};
+})
 
 export default Projects;

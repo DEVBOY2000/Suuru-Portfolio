@@ -27,6 +27,7 @@ const Project = ({ project }) => {
 
   return (
     <Link
+    aria-label={`go to ${project.name}`}
       to={`project/${project.name}`}
       // onClick={() => setProjectName((prev) => ({prev : prev.prev, current : project.name}))}
       // onMouseEnter={mouseEnterHandler}

@@ -21,17 +21,18 @@ const Header = () => {
   }, [URL]);
 
   return (
-    <header className="h-[dvh] relative">
+    <header className="h-[100dvh] relative">
       <video
         loop
         muted
         autoPlay
         preload="auto"
-        className="w-screen h-screen object-cover"
+        className="w-full h-full object-cover"
         poster={Banner}
         type="video/mp4"
         src={URL}
         style={{objectPosition : "90%"}}
+        alt="header"
       />
       <div className="w-full h-full absolute top-0 left-0 bg-black opacity-80"></div>
       <section className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white flex flex-col items-center gap-3 z-0">

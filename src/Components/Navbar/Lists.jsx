@@ -15,22 +15,18 @@ const Lists = ({ StylesHandler }) => {
           return <Account key={i} />;
         }
         return (
-          <Link
-            key={i}
-            to={navbarLists[list]}
-            className={`${list === "sign in" ? `order-3` : null}`}
-          >
-            <li
-              className={`cursor-pointer p-3 py-1 transition-colors ${StylesHandler(
-                {
-                  active: "hover:bg-black hover:text-white",
-                  unactive: "hover:bg-white hover:text-black",
-                }
-              )}`}
-            >
-              {list}
+            <li key={i} className={`${list === "sign in" ? `order-3` : ""}`}>
+              <Link
+                className={`cursor-pointer p-3 py-1 transition-colors ${StylesHandler(
+                  {
+                    active: "hover:bg-black hover:text-white",
+                    unactive: "hover:bg-white hover:text-black",
+                  }
+                )}`}
+                to={navbarLists[list]}
+              >{list}
+              </Link>
             </li>
-          </Link>
         );
       })}
       <Theme StylesHandler={StylesHandler} />

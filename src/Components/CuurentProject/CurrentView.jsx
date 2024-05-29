@@ -48,7 +48,6 @@ const CurrentView = () => {
   })
 
   useEffect(() => {
-
     function scrollHandler() {
       if (currentView && !videoRef.current) return; //must be video tag
       if (videoRef.current?.readyState >= 3) {
@@ -68,10 +67,8 @@ const CurrentView = () => {
       : projects.find((project) => project.name === name)?.image.replace("Prviews%2F","");
   };
 
-
-
   return (
-    <article className="sticky top-[57px] xs:top-auto z-0 xs:z-auto xs:relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100lvh_-_57px)] xs:h-[calc(100lvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden"
+    <article className="sticky top-[57px] xs:top-auto z-0 xs:z-auto xs:relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100dvh_-_57px)] xs:h-[calc(100dvh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden"
          ref={componentRef}
          style={{opacity : isMobileView ? opacity : 1}}
     >

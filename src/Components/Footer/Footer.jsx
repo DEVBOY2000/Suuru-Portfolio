@@ -23,7 +23,7 @@ const Footer = () => {
         <ul className="flex">
           {footerIconsArray.map((list) => (
             <li key={list.name} className="m-3 block">
-              <a href={list.url} target="_blank" title={list.name}>
+              <a href={list.url} target="_blank" title={list.name} aria-label={`go to ${list.url}`}>
                 <FontAwesomeIcon icon={list.icon} className="text-xl" />
               </a>
             </li>
@@ -33,10 +33,12 @@ const Footer = () => {
               href="https://kemono.su/patreon/user/35774903"
               target="_blank"
               title="Kemono"
+              aria-label="go to patreon"
             >
               <img
                 src={kemonoIcon}
                 className="w-[20px] h-[20px] mt[2px] invert dark:invert-0"
+                alt="kemonoIcon"
               />
             </a>
           </li>

@@ -19,6 +19,8 @@ const SearchProject = () => {
   return (
     <form className="flex justify-center pt-2 px-2" onChange={(e) => e.preventDefault()}>
       <input
+        id="search"
+        name="search-input"
         onChange={({ target }) => searchingHandler(target.value)}
         type="search"
         placeholder="project name"

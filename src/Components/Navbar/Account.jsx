@@ -16,7 +16,7 @@ const Account = () => {
   };
 
   return (
-    <div className="relative rounded-full order-3">
+    <li className="relative rounded-full order-3">
       <div
         className="cursor-pointer active:scale-95"
         onClick={() => setMenuState(!menuState)}
@@ -47,7 +47,7 @@ const Account = () => {
           </button>
         </div>
       )}
-    </div>
+    </li>
   );
 };
 

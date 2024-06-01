@@ -73,6 +73,8 @@ const UploadToProject = () => {
             try {
               await uploadBytes(projectRef, newFile);
               setUploadItems(uploadItems.slice(0, currUploadingIndex));
+              console.log(fileOBJ);
+              console.log(currUploadingIndex);
               setCurrUploadingIndex((currUploadingIndex -= 1));
               currUploadingIndex < 0 && clearTimeout(timer);
               uploading();
@@ -80,7 +82,7 @@ const UploadToProject = () => {
               console.error(error);
             }
           }
-        }, 300);
+        }, 1000);
       }
     }
   }, [uploadItems.length]);

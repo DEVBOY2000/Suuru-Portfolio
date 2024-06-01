@@ -1,24 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { storage } from "../../../Firebase/Firebase";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import React from "react";
 import Banner from "./Banner.jpg";
+import useHeaderVideo from "../../../Hooks/useHeaderVideo";
 
 const Header = () => {
-  const [URL, setURL] = useState(null);
-
   const scrollToProjects = () => {
     const projectComponent = document.querySelector("#projects").offsetTop;
     window.scroll({ top: projectComponent - 57, left: 0, behavior: "smooth" });
   };
 
-  useEffect(() => {
-    if (!URL) {
-      const listItemsRef = ref(storage, "/Banner");
-      listAll(listItemsRef).then(({ items }) =>
-        items.map((item) => getDownloadURL(item).then((data) => setURL(data)))
-      );
-    }
-  }, [URL]);
+  const URL = useHeaderVideo("bannar (1).mp4");
 
   return (
     <header className="h-[100dvh] relative">

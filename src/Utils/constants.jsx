@@ -7,11 +7,6 @@ import DownloadButton from "../Components/OptionButtons/DownloadButton";
 import UploadButton from "../Components/OptionButtons/UploadButton";
 import DeleteButton from "../Components/OptionButtons/DeleteButton";
 
-import video1 from "../Components/Auth/videos/video (1).mp4";
-import video2 from "../Components/Auth/videos/video (2).mp4";
-import video3 from "../Components/Auth/videos/video (3).mp4";
-import video4 from "../Components/Auth/videos/video (4).mp4";
-
 export const navbarLists = {
   home: "",
   "upload project": "uploadProject",
@@ -58,10 +53,11 @@ export const optionButtons = [
 ];
 
 export const loginVideos = [
-  { src: video1, position: "30%" },
-  { src: video2, position: "left" },
-  { src: video3, position: "10%" },
-  { src: video4, position: "75%" },
+  { src: "auth (1)", position: "30%" },
+  { src: "auth (2)", position: "left" },
+  { src: "auth (3)", position: "10%" },
+  { src: "auth (4)", position: "75%" },
+  { src: "auth (5)", position: "38%" },
 ];
 
 export const unEncodedStr = (string) => {

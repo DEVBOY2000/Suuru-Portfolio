@@ -42,6 +42,7 @@ export const AppContextProvider = ({ children }) => {
   const [currentRestItems, setCurrentRestItems] = useState([]);
   const [uploadItems, setUploadItems] = useState([]);
   const [currUploadingIndex, setCurrUploadingIndex] = useState(-1);
+  const [uploadingProgress, setUploadingProgress] = useState(0);
 
   const sharedValues = {
     projects,
@@ -78,6 +79,8 @@ export const AppContextProvider = ({ children }) => {
     setUploadItems,
     currUploadingIndex,
     setCurrUploadingIndex,
+    uploadingProgress,
+    setUploadingProgress,
 
     nextView: () => nextView(currentProjectItems, currentView, setCurrentView),
     prevView: () => prevView(currentProjectItems, currentView, setCurrentView),

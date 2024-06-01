@@ -127,7 +127,7 @@ const ParentUploadingCom = ({ uploadingOpreation }) => {
             </div>
             <button
               disabled={false}
-              onClick={(e) => uploadURLHandler(e)}
+              onClick={() => uploadURLHandler(uploadItems, setUploadItems)}
               className="bg-black  dark:bg-white text-white dark:text-black capitalize  rounded-md active:scale-95 py-3 px-5 cursor-pointer block"
             >
               URL

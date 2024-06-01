@@ -8,13 +8,18 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, provider } from "../../Firebase/Firebase";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../Context/AppContext";
+import { useNavigate } from "react-router-dom";
+import useHeaderVideo from "../../Hooks/useHeaderVideo";
 
 const Auth = () => {
-  const { setSignIn, rememberMe, setRememberMe } = useContext(AppContext);
+  const { signIn, setSignIn, rememberMe, setRememberMe } =
+    useContext(AppContext);
 
-  const [randomNumber, setRandomNumber] = useState(null);
+  const randomNumber =
+    Math.floor(Math.random() * Object.keys(loginVideos).length) ||
+    Math.floor(Math.random() * Object.keys(loginVideos).length) + 1;
 
   const googleSignIn = () => {
     signInWithPopup(auth, provider)
@@ -70,11 +75,15 @@ const Auth = () => {
       );
   };
 
+  const navTo = useNavigate();
+
   useEffect(() => {
-    setRandomNumber(
-      Math.floor(Math.random() * Object.keys(loginVideos).length)
-    );
-  }, [randomNumber]);
+    if (signIn?.email) {
+      navTo("/Suuru-Portfolio");
+    }
+  }, [signIn?.email]);
+
+  const video = useHeaderVideo(`auth (${randomNumber}).mp4`);
 
   return (
     <section className="relative text-white normal-case h-full">
@@ -86,12 +95,15 @@ const Auth = () => {
             muted
             loop
             className={`w-full h-full object-cover`}
-            src={loginVideos[randomNumber]?.src}
+            src={video}
             style={{
-              objectPosition: loginVideos[randomNumber]?.position,
+              objectPosition: loginVideos.filter((object) =>
+                video.includes(encodeURIComponent(object.src))
+              )[0]?.position,
             }}
+            preload="auto"
           >
-            <source src={loginVideos[randomNumber]?.src} type="video/mp4" />
+            <source src={video} type="video/mp4" />
           </video>
         </div>
       </article>

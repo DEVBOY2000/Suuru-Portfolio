@@ -8,6 +8,7 @@ import CardType from "./CardType";
 
 const UploadItem = ({ item, setState, state, loadingState, index }) => {
   const { currUploadingIndex } = useContext(AppContext);
+  let { uploadingProgress, setUploadingProgress } = useContext(AppContext);
   const [videoState, setVideoState] = useState(false);
 
   const deleteIcon = () => (
@@ -42,6 +43,9 @@ const UploadItem = ({ item, setState, state, loadingState, index }) => {
             className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2"
           >
             <CircleLoading />
+            {/* <span className="text-white text-xl">
+              {uploadingProgress + "%"}
+            </span> */}
             <span className="sr-only">Loading...</span>
           </div>
         </div>

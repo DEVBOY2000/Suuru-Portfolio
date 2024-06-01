@@ -2,7 +2,6 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "../Firebase/Firebase";
-import { unEncodedStr } from "../Utils/constants";
 
 export const nextView = (items, currView, handler) => {
   const index = items.findIndex((e) => e === currView);
@@ -108,7 +107,7 @@ export const downloadItemsHandler = async (
     selectedItems.map(async (url) => {
       const projectNameIndex = url.indexOf(name.split(/\s/)[0]);
       const questionMarkIndex = url.indexOf("?");
-      const fileName = unEncodedStr(
+      const fileName = decodeURIComponent(
         url.substring(projectNameIndex, questionMarkIndex)
       );
       const imgBlob = await (await fetch(url)).blob();

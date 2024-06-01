@@ -20,6 +20,7 @@ const ParentApp = () => {
     setCurrUploadingIndex,
     setPrevProjectName,
     prevProjectName,
+    setLoadingState,
   } = useContext(AppContext);
 
   const pathname = useHref();
@@ -45,9 +46,10 @@ const ParentApp = () => {
       setMoreItems({ state: false, pageToken: "", noMoreITems: false });
     }
 
-    setCurrUploadingIndex(0);
+    setCurrUploadingIndex(-1);
     setUploadItems([]);
     setSearchedProjects([]);
+    setLoadingState(false);
   }, [pathname, name, prevProjectName]);
 
   return (

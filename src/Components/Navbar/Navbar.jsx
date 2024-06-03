@@ -33,7 +33,7 @@ const Navbar = () => {
 
   useEffect(() => {
     listsState && setListsState(false);
-  }, [pathname, listsState]);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -18,11 +18,13 @@ const useProjectStorage = () => {
   //use list insted of listAll to use maxResult property
   useEffect(() => {
     const listItemsRef = ref(storage, `Projects/${name}`);
+
     const dataStorage = async () =>
       await list(listItemsRef, {
         maxResults: 10,
         pageToken: MoreItems.pageToken,
       });
+
     const getItems = async () => {
       const { items, nextPageToken } = await dataStorage();
       return Promise.all(

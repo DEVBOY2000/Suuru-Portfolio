@@ -6,7 +6,7 @@ import Items from "./Items";
 import RestItems from "./RestItems";
 import useProjectsDB from "../../Hooks/useProjectsDB";
 
-const CuurentProject = () => {
+const CurrentProject = () => {
   const { currentView, MoreItems } = useContext(AppContext);
 
   useScrollToTop(currentView);
@@ -22,4 +22,4 @@ const CuurentProject = () => {
   );
 };
 
-export default CuurentProject;
+export default CurrentProject;

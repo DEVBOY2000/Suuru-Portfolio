@@ -74,17 +74,28 @@ export const clearString = (string) => {
 };
 
 export const parentAppComStyle = (pathname) => {
-  if (pathname.replace(/\//g, "") === "Suuru-Portfolio") {
-    return "mb-[92px] sm:mb-[72px]";
+  const fullHightScreen =
+    "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)]";
+
+  const routesStyleObject = {
+    home: "mb-[92px] sm:mb-[72px]",
+    project:
+      "min-h-[calc(100vh_-_92px)] min-h-[calc(100vh_-_96px)] sm:min-h-[calc(100vh_-_72px)] pt-[57px] mb-[-60px]",
+    uploading: `${fullHightScreen} pt-[64px] sm:mb-[72px] overflow-auto`,
+    login: `${fullHightScreen} h-[100vh_!important]`,
+  };
+
+  if (pathname === "/Suuru-Portfolio") {
+    return routesStyleObject.home;
   } else if (pathname.includes("/project")) {
-    return "mb-[-60px] min-h-[calc(100vh_-_92px)] min-h-[calc(100vh_-_96px)] sm:min-h-[calc(100vh_-_72px)] pt-[57px]";
+    return routesStyleObject.project;
   } else if (
     pathname.includes("/uploadProject") ||
     pathname.includes("/uploadToProject")
   ) {
-    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] pt-[64px] sm:mb-[72px] overflow-auto";
+    return routesStyleObject.uploading;
   } else if (pathname.includes("/login")) {
-    return "min-h-[calc(100vh_-_92px)] h-[calc(100vh_-_96px)] sm:h-[calc(100vh_-_72px)] h-[100vh_!important]";
+    return routesStyleObject.login;
   }
 };
 

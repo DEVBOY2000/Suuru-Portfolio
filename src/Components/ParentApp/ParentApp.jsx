@@ -3,11 +3,11 @@ import { Outlet, useHref, useParams } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import FlotingEdition from "../FlotingEdition/FlotingEdition";
-import { AppContext } from "../../Context/AppContext";
 import Modal from "../../Modal/Modal";
+import usePrevState from "../../Hooks/usePrevState";
+import { AppContext } from "../../Context/AppContext";
 import { globalIcons } from "../../Utils/GlobalIcons";
 import { parentAppComStyle } from "../../Utils/constants";
-import usePrevState from "../../Hooks/usePrevState";
 
 const ParentApp = () => {
   const {
@@ -31,7 +31,7 @@ const ParentApp = () => {
 
   useEffect(() => {
     if (!pathname.includes("project")) {
-      setPrevProjectName(prevProject);
+      prevProject && setPrevProjectName(prevProject);
     }
 
     if (

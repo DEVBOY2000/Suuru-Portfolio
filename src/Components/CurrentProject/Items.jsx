@@ -10,6 +10,7 @@ const Items = () => {
   useScrollToElement("items", deletionState);
 
   useProjectStorage();
+
   return (
     <section
       id="items"

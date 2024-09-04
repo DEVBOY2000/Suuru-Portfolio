@@ -85,7 +85,7 @@ export const parentAppComStyle = (pathname) => {
     login: `${fullHightScreen} h-[100vh_!important]`,
   };
 
-  if (pathname === "/Suuru-Portfolio") {
+  if (pathname === "/Suuru-Portfolio" || pathname === "/Suuru-Portfolio/") {
     return routesStyleObject.home;
   } else if (pathname.includes("/project")) {
     return routesStyleObject.project;

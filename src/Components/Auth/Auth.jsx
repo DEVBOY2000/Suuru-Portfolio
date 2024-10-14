@@ -90,6 +90,9 @@ const Auth = () => {
       <article className="absolute w-full h-full top-0 left-0">
         <div className="relative w-full h-full">
           {/* <img src={img} className="w-full h-full object-cover object-left" /> */}
+          <div className="w-full h-full absolute top-0 left-0 z-10">
+            {/*prevent access video cotrolls */}
+          </div>
           <video
             autoPlay
             muted

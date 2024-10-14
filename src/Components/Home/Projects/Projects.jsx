@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useRef } from "react";
+import React, { forwardRef, useContext } from "react";
 
 import Project from "./Project";
 import { AppContext } from "../../../Context/AppContext";

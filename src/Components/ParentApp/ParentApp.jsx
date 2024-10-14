@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { Outlet, useHref, useParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import FlotingEdition from "../FlotingEdition/FlotingEdition";
@@ -23,7 +23,7 @@ const ParentApp = () => {
     setLoadingState,
   } = useContext(AppContext);
 
-  const pathname = useHref();
+  const { pathname } = useLocation();
 
   const { name } = useParams();
 

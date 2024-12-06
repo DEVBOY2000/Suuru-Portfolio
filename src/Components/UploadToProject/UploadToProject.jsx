@@ -43,7 +43,7 @@ const UploadToProject = () => {
     uploading();
 
     function uploading() {
-      if (currUploadingIndex >= 0) {
+      if (currUploadingIndex > -1) {
         if (result[currUploadingIndex].type.includes("image")) {
           return new Compressor(result[currUploadingIndex], {
             quality: 0.6,
@@ -69,20 +69,19 @@ const UploadToProject = () => {
           `Projects/${folderName.name}/${fileOBJ.name}`
         );
         timer = setTimeout(async () => {
-          if (currUploadingIndex >= 0) {
+          if (currUploadingIndex > -1) {
             try {
-              await uploadBytes(projectRef, newFile);
-              setUploadItems(uploadItems.slice(0, currUploadingIndex));
-              console.log(fileOBJ);
-              console.log(currUploadingIndex);
-              setCurrUploadingIndex((currUploadingIndex -= 1));
-              currUploadingIndex < 0 && clearTimeout(timer);
+              // await uploadBytes(projectRef, newFile);
+              await setUploadItems(uploadItems.slice(0, currUploadingIndex));
+              // console.log(fileOBJ);
+              // setCurrUploadingIndex(currUploadingIndex--);
+              // currUploadingIndex < 0 && clearTimeout(timer);
               uploading();
             } catch (error) {
               console.error(error);
             }
           }
-        }, 1000);
+        }, 1500);
       }
     }
   }, [uploadItems.length]);

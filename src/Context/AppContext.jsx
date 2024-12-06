@@ -44,6 +44,8 @@ export const AppContextProvider = ({ children }) => {
   const [currUploadingIndex, setCurrUploadingIndex] = useState(-1);
   const [uploadingProgress, setUploadingProgress] = useState(0);
 
+  console.log(currUploadingIndex);
+
   const sharedValues = {
     projects,
     setProjects,

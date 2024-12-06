@@ -7,15 +7,18 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth, provider } from "../../Firebase/Firebase";
-import { useContext, useEffect } from "react";
+import { auth, provider, storage } from "../../Firebase/Firebase";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../Context/AppContext";
 import { useNavigate } from "react-router-dom";
-import useHeaderVideo from "../../Hooks/useHeaderVideo";
+// import useHeaderVideo from "../../Hooks/useHeaderVideo";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 
 const Auth = () => {
   const { signIn, setSignIn, rememberMe, setRememberMe } =
     useContext(AppContext);
+
+  const [randomVideo, setRandomVideo] = useState("");
 
   const randomNumber =
     Math.floor(Math.random() * Object.keys(loginVideos).length) ||
@@ -83,30 +86,39 @@ const Auth = () => {
     }
   }, [signIn?.email]);
 
-  const video = useHeaderVideo(`auth (${randomNumber}).mp4`);
+  // const video = useHeaderVideo(`auth (${randomNumber}).mp4`);
+
+  useEffect(() => {
+    if (!randomVideo) {
+      const refrance = ref(storage, `/Banner`);
+      listAll(refrance).then(({ items }) => {
+        const filteredItemsRef = items.filter((item) =>
+          item.name.includes("auth")
+        );
+        const randomNum = Math.floor(Math.random() * filteredItemsRef.length);
+        getDownloadURL(filteredItemsRef[randomNum]).then((data) =>
+          setRandomVideo(data)
+        );
+      });
+    }
+  }, [randomVideo]);
 
   return (
     <section className="relative text-white normal-case h-full">
       <article className="absolute w-full h-full top-0 left-0">
         <div className="relative w-full h-full">
-          {/* <img src={img} className="w-full h-full object-cover object-left" /> */}
           <div className="w-full h-full absolute top-0 left-0 z-10">
             {/*prevent access video cotrolls */}
           </div>
           <video
             autoPlay
-            muted
             loop
-            className={`w-full h-full object-cover`}
-            src={video}
-            style={{
-              objectPosition: loginVideos.filter((object) =>
-                video.includes(encodeURIComponent(object.src))
-              )[0]?.position,
-            }}
+            muted
+            className={`w-full h-full object-cover object-center`}
+            src={randomVideo}
             preload="auto"
           >
-            <source src={video} type="video/mp4" />
+            {/* <source src={video} type="video/mp4" /> */}
           </video>
         </div>
       </article>

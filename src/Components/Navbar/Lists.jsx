@@ -14,6 +14,7 @@ const Lists = ({ StylesHandler }) => {
         if (signIn?.email && list === "sign in") {
           return <Account key={i} />;
         }
+        if (!signIn?.email && list === "upload project") return;
         return (
           <li key={i} className={`${list === "sign in" ? `order-3` : ""}`}>
             <Link

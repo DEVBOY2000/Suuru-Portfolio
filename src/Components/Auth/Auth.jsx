@@ -34,6 +34,9 @@ const Auth = () => {
         const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
+
+        console.log(user);
+
         const { displayName, photoURL, email } = user;
 
         setSignIn({ displayName, photoURL, email });

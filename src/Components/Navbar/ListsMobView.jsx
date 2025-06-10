@@ -20,6 +20,7 @@ const ListsMobView = () => {
       <ul>
         {Object.keys(navbarLists).map((item, i) => {
           if (signIn?.email && item === "sign in") return;
+          if (!signIn?.email && item === "upload project") return;
           return (
             <Link key={i} to={navbarLists[item]}>
               <li

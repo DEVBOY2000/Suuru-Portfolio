@@ -16,6 +16,7 @@ const CurrentView = () => {
     currentProjectItems,
     nextView,
     prevView,
+    signIn,
   } = useContext(AppContext);
 
   const [opacity, setOpacity] = useState(1);
@@ -81,7 +82,7 @@ const CurrentView = () => {
           title="Current Preview"
         />
       ) : (
-        <ActivePreview />
+        signIn?.displayName && <ActivePreview />
       )}
       <FontAwesomeIcon
         className={arrowsStyle("left")}

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { storage } from "../../Firebase/Firebase";
 import { listAll, ref as stRef, uploadBytes } from "firebase/storage";
 import { AppContext } from "./../../Context/AppContext";
@@ -14,7 +14,6 @@ const UploadToProject = () => {
     setUploadItems,
     setCurrUploadingIndex,
   } = useContext(AppContext);
-  let { currUploadingIndex } = useContext(AppContext);
   const [projectFiles, setProjectFiles] = useState({
     lastVideoIndex: 0,
     lastImageIndex: 0,
@@ -26,7 +25,7 @@ const UploadToProject = () => {
 
   const uploadingOpreation = useCallback(() => {
     if (!uploadItems.length) return;
-    //rename files to extra ...
+
     const result = [...uploadItems].map((item, index) => {
       const file = new File(
         [item],
@@ -40,51 +39,54 @@ const UploadToProject = () => {
     });
 
     setLoadingState(true);
-    uploading();
 
-    function uploading() {
-      if (currUploadingIndex > -1) {
-        if (result[currUploadingIndex].type.includes("image")) {
-          return new Compressor(result[currUploadingIndex], {
-            quality: 0.6,
-            convertTypes: "image/jpg",
-            convertSize: 700000,
-            width: 1200,
-            height: 1600,
-            success(blob) {
-              return uploadingByType(blob, "image/jpg");
-            },
-          });
-        } else return uploadingByType(result[currUploadingIndex], "video/mp4");
-      } else {
+    async function uploading(index) {
+      if (index < 0) {
         setUploadItems([]);
         setLoadingState(false);
+        return;
       }
-
-      function uploadingByType(fileOBJ, type) {
-        let timer;
-        const newFile = new File([fileOBJ], fileOBJ.name, { type });
-        const projectRef = stRef(
-          storage,
-          `Projects/${folderName.name}/${fileOBJ.name}`
+      let file = result[index];
+      if (file.type.includes("image")) {
+        file = await new Promise(
+          (resolve) =>
+            new Compressor(file, {
+              quality: 0.6,
+              convertTypes: "image/jpg",
+              convertSize: 700000,
+              width: 1200,
+              height: 1600,
+              success(blob) {
+                resolve(new File([blob], file.name, { type: "image/jpg" }));
+              },
+            })
         );
-        timer = setTimeout(async () => {
-          if (currUploadingIndex > -1) {
-            try {
-              // await uploadBytes(projectRef, newFile);
-              await setUploadItems(uploadItems.slice(0, currUploadingIndex));
-              // console.log(fileOBJ);
-              // setCurrUploadingIndex(currUploadingIndex--);
-              // currUploadingIndex < 0 && clearTimeout(timer);
-              uploading();
-            } catch (error) {
-              console.error(error);
-            }
-          }
-        }, 1500);
+      }
+      const projectRef = stRef(
+        storage,
+        `Projects/${folderName.name}/${file.name}`
+      );
+      try {
+        await uploadBytes(projectRef, file);
+        setCurrUploadingIndex((prev) => prev - 1);
+        uploading(index - 1);
+      } catch (error) {
+        console.error(error);
+        setLoadingState(false);
       }
     }
-  }, [uploadItems.length]);
+
+    setCurrUploadingIndex(result.length - 1);
+    uploading(result.length - 1);
+  }, [
+    uploadItems,
+    projectFiles,
+    setUploadItems,
+    setLoadingState,
+    setCurrUploadingIndex,
+    storage,
+    folderName.name,
+  ]);
 
   useEffect(() => {
     const listItemsRef = stRef(storage, `Projects/${folderName.name}`);

@@ -68,7 +68,7 @@ const ParentUploadingCom = ({ uploadingOpreation }) => {
             </button>
             <div className={`${optionButtonsStyles()}`}>
               <label htmlFor="file" disabled={loadingState}>
-                browes files
+                browe files
               </label>
               <input
                 id="file"

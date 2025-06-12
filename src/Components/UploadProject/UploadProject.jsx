@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { storage, database } from "../../Firebase/Firebase";
 import { listAll, ref as storageRef, uploadBytes } from "firebase/storage";
+import { ref as dbRef, set, push } from "firebase/database";
 
-import { ref as dbRef, set } from "firebase/database";
 import { AppContext } from "../../Context/AppContext";
 import Compressor from "compressorjs";
 import { clearString } from "../../Utils/constants";
@@ -78,7 +78,6 @@ const UploadProject = () => {
     // رفع الملفات
     async function uploading(index) {
       if (index < 0) {
-        setUploadItems([]);
         setLoadingState(false);
         return;
       }
@@ -107,10 +106,13 @@ const UploadProject = () => {
       );
       try {
         await uploadBytes(projectRef, fileToUpload);
+        // احذف الملف من uploadItems بعد رفعه
+        setUploadItems((prev) => prev.filter((_, i) => i !== index));
         setCurrUploadingIndex((prev) => prev - 1);
         uploading(index - 1);
       } catch (error) {
         console.log(error);
+        setLoadingState(false);
       }
     }
 
@@ -118,7 +120,7 @@ const UploadProject = () => {
     if (!projectData) {
       const url =
         "https://firebasestorage.googleapis.com/v0/b/portofolio-6fbe1.appspot.com/o/";
-      await set(dbRef(database, "/" + projects.length), {
+      await push(dbRef(database), {
         name: projectNamePrompt,
         image: `${url}${encodeURIComponent(
           "Projects/" + projectNamePrompt + "/"

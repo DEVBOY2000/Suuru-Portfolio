@@ -60,7 +60,7 @@ const UploadProject = () => {
         return file;
       });
 
-    const projectData = await projectContent;
+    const projectData = projectContent;
     const videos = fileHandler(
       videosArr,
       projectData ? projectData.lastVideosIndex + 1 : 1,
